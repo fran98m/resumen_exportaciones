@@ -174,3 +174,4 @@ def format_to_millions(value: float) -> str:
     value_in_millions = value / 10**6
     return '{:,.1f}'.format(value_in_millions)
     
+
