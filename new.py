@@ -396,5 +396,4 @@ def no_mineras(df: pd.DataFrame,vars_from_totales:dict,vars_from_mes_ano:dict) -
     "conteo_empresas": conteo_empresas,
     }
 
-#path=r"D:\usuarios\Pvein2\OneDrive - PROCOLOMBIA\Escritorio\Francisco\Corrección Resumen Export (Doc) (S)\Base.csv"
-#df=pd.read_csv(path,sep=";",encoding="latin-1",decimal=",",thousands=".")
+
