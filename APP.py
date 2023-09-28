@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import filedialog, messagebox
+from tkinter import filedialog, messagebox, Label
 import os
 import importar
 import new as datos
@@ -40,12 +40,35 @@ def select_file():
         # Close the Tkinter window after processing
         if 'app' in locals():
             app.destroy()
+
+#Edición del diseño de la interfaz gráfica:
 if __name__ == "__main__":
+   #Aquí van la configuracion de la ventana principal se inicia app que es el gui de tkinter
     app = tk.Tk()
     app.title("Automatización Resumen Exportaciones")
+    app.geometry("1200x400")
+    app.configure(bg="#87CEFA")
     
-    select_button = tk.Button(app, text="Selecciona la base", command=select_file)
+    #Aquí se pone la imagen de Procolombia
+    corporate_image_path = r"D:\usuarios\Pvein2\OneDrive - PROCOLOMBIA\Escritorio\Francisco\Corrección Resumen Export (Doc) (S)\Procolombia.PNG"  # Replace with your image path
+    corporate_image = tk.PhotoImage(file=corporate_image_path)
+    image_label = Label(app, image=corporate_image, bg="#f0f0f0")
+    image_label.pack(pady=20)  # Place the image with some padding
+    
+    #Finalmente se añade una etiqueta con quien desarrolló la aplicación    
+    
+    label_text = "Herramienta desarrollada por la GIC Procolombia (Coordinación de Analítica)"
+    label = tk.Label(app, text=label_text, bg='#D9E5E9', font=('Arial', 12))
+    label.pack(side=tk.BOTTOM, pady=10) 
+
+
+#Aquí se edita el botón principal de la aplicación
+    select_button = tk.Button(app, text="Selecciona la base", command=select_file, bg='#003366', fg='white', borderwidth=0, padx=20, pady=10)
     select_button.pack(pady=20)
-    
+
+
+
+
+
     app.mainloop()
 
