@@ -22,9 +22,7 @@ Correlativa
 """
 def import_data_from_excel(file_path):
     # Specified columns to select
-    columns_to_select_excel = [0, 1, 2, 3, 6, 7, 8, 14, 35, 37]
-    
-    
+    columns_to_select_excel = [0, 1, 2, 3, 6, 7, 8, 14, 35, 37]   
     if file_path.endswith('.xlsb'):
         # Read the second sheet of the Excel binary workbook starting from the 6th row and using the specified columns
         df = pd.read_excel(file_path, sheet_name=1, engine='pyxlsb', skiprows=range(5), usecols=columns_to_select)
