@@ -2,7 +2,7 @@
 from docx import Document
 from docx.shared import RGBColor, Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from new import totales, no_mineras
+from new import totales, no_mineras, mes_ano
 from config import correlativas
 import os
 import pandas as pd 
@@ -161,18 +161,7 @@ def generar_docx(vars_from_totales:dict,vars_from_no_mineras: dict,vars_from_mes
     companies_str = ', '.join(companies_str_list)
     doc.add_paragraph(f"• Las empresas con mayores exportaciones son: {companies_str}.")
 
-
-
-#################################################################################################################
     return doc
-
-
-
-
-path_to_save = r"D:\usuarios\Pvein2\Pictures\Francisco\Test Modulo"
-nom_arch = "exportaciones_10s+70s+255.docx"
-path_tot = (os.path.join(path_to_save, nom_arch))
-    
 
 ########################################################################################################################################
 
@@ -185,14 +174,3 @@ def format_to_millions(value: float) -> str:
     value_in_millions = value / 10**6
     return '{:,.1f}'.format(value_in_millions)
     
-
-
-
-path=r"D:\usuarios\Pvein2\OneDrive - PROCOLOMBIA\Escritorio\Francisco\Corrección Resumen Export (Doc) (S)\Base.csv"
-df=pd.read_csv(path,sep=";",encoding="latin-1",decimal=",",thousands=".")
-vars_from_mes_ano=mes_ano(df)
-vars_from_totales = totales(df,vars_from_mes_ano)
-vars_from_no_mineras = no_mineras(df, vars_from_totales)
-
-resumen=generar_docx(vars_from_totales,vars_from_no_mineras)
-resumen.save(path_tot)

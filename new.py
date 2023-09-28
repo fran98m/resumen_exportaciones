@@ -27,10 +27,10 @@ def mes_ano(df: pd.DataFrame) -> (str, str):
     
     # Get the value from the 'correlativas' column of the first row
     # Assuming df has at least one row and 'correlativas' is the name of the column
-    correlativa_value = df['correlativas'].iloc[9]
+    nombre_col = df.columns[9]
     
     # Use regex to extract year and month abbreviation
-    match = re.search(r'(\d{4}) .*?-([A-Za-z]{3})', correlativa_value)
+    match = re.search(r'(\d{4}) .*?-([A-Za-z]{3})', nombre_col)
     
     if match:
         year = match.group(1)
@@ -76,7 +76,7 @@ def totales(totales_df: pd.DataFrame,vars_from_ano_mes:dict) -> None:
 
 
     #3. Conteo de empresas
-    conteo_empr_df = no_mineras_df.groupby(correlativas(4))[correlativas[9]].sum().reset_index()
+    conteo_empr_df = no_mineras_df.groupby(correlativas[4])[correlativas[9]].sum().reset_index()
 
     # Filtrar las filas donde la columna '2023 USD (Ene-Jul)' es mayor que 10000
 
@@ -124,7 +124,7 @@ def no_mineras(df: pd.DataFrame,vars_from_totales:dict,vars_from_mes_ano:dict) -
     expt_act_tot_no_min = vars_from_totales["expt_act_tot_no_min"]
     tagvar_nm_tot = vars_from_totales["tagvar_nm_tot"]
     var_nm_tot = vars_from_totales["var_nm_tot"]
-    conteo_empresas = vars_from_totales["conteo_empresas"]
+    conteo_empresas = vars_from_totales["conteo_emp"]
     expt_ant_tot_no_min = vars_from_totales["expt_ant_tot_no_min"]
     mes=vars_from_mes_ano["mes"]
     ano=vars_from_mes_ano["ano"]

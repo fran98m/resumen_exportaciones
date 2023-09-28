@@ -3,7 +3,7 @@ correlativas = {
     1: "Cadena",
     2: "Sector",
     3: "Subsector",
-    4: "NIT",
+    4: "Nit Exportador",
     5: "Razon Social",
     6: "Pais Destino",
     7: "Departamento Origen",
