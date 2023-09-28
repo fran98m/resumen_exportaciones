@@ -4,8 +4,6 @@ from docx.shared import RGBColor, Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from new import totales, no_mineras, mes_ano
 from config import correlativas
-import os
-import pandas as pd 
 
 def generar_docx(vars_from_totales:dict,vars_from_no_mineras: dict,vars_from_mes_ano:dict):
     ano_actual = vars_from_totales["ano_actual"]
