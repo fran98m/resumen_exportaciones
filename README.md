@@ -21,7 +21,7 @@ Esta aplicación procesa y genera reportes basados en datos de exportaciones. Ut
 - La aplicación generará un documento de Word con el análisis y reporte basados en los datos proporcionados.
 ## Contribuciones
 - Si desea contribuir al proyecto, realice un "fork" del repositorio, haga sus cambios y luego envíe un "pull request".
-
+- **Use la correlativa de acuerdo al mes en el que se encuentra, si no va a tener errores de código a la hora de importar el excel 
 ## Licencia
 Este proyecto está bajo la licencia MIT.
 
