@@ -28,6 +28,10 @@ def import_data_from_excel(file_path):
     if file_path.endswith('.xlsb'):
         # Read the second sheet of the Excel binary workbook starting from the 6th row and using the specified columns
         df = pd.read_excel(file_path, sheet_name=1, engine='pyxlsb', skiprows=range(5), usecols=columns_to_select)
+    elif file_path.endswith('.txt'):
+        df = pd.read_csv(file_path, sheet_name=1, skiprows=range(5), usecols=columns_to_select, sep=";",thousands=".",decimal=",",encoding='latin-1')    
+    elif file_path.endswith('.csv'):
+        df=pd.read_csv(file_path, sheet_name=1, skiprows=range(5), usecols=columns_to_select, sep=";",thousands=".",decimal=",",encoding='latin-1')
     else:
         df = pd.read_excel(file_path, sheet_name=1, skiprows=range(5), usecols=columns_to_select)
     
