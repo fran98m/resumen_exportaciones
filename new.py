@@ -4,15 +4,53 @@ from docx import Document
 from docx.shared import RGBColor, Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from config import correlativas
+import re
+
+#############################################################################################
+#Funciones Auxiliares para Sacar mes y año:
+def mes_ano(df: pd.DataFrame) -> (str, str):
+    # Dictionary of three-letter month abbreviations to full month names
+    meses = {
+        "Ene": "Enero",
+        "Feb": "Febrero",
+        "Mar": "Marzo",
+        "Abr": "Abril",
+        "May": "Mayo",
+        "Jun": "Junio",
+        "Jul": "Julio",
+        "Ago": "Agosto",
+        "Sep": "Septiembre",
+        "Oct": "Octubre",
+        "Nov": "Noviembre",
+        "Dic": "Diciembre"
+    }
+    
+    # Get the value from the 'correlativas' column of the first row
+    # Assuming df has at least one row and 'correlativas' is the name of the column
+    correlativa_value = df['correlativas'].iloc[9]
+    
+    # Use regex to extract year and month abbreviation
+    match = re.search(r'(\d{4}) .*?-([A-Za-z]{3})', correlativa_value)
+    
+    if match:
+        year = match.group(1)
+        month_abbrev = match.group(2)
+        month_full = meses.get(month_abbrev, month_abbrev)  # Get full month name or use abbreviation if not found
+        ano_ant=int(year)-1
+        ano_ant=str(ano_ant)
+        return {
+            "mes": month_full,
+            "ano": year,
+            "ano_ant": ano_ant
+        }
+    else:
+        return None, None
 
 ###########################################################################################
-def totales(totales_df: pd.DataFrame) -> None:
+def totales(totales_df: pd.DataFrame,vars_from_ano_mes:dict) -> None:
     ##################################### Resumen Inicial##############################################
-      
-    ano_actual = 2203
-    ano_anterior = 2202
-    
-    
+    mes=vars_from_ano_mes["mes"]
+    ano=vars_from_ano_mes["ano"]    
     #1. Primer Bullet
     
     # Calcular años
@@ -38,12 +76,18 @@ def totales(totales_df: pd.DataFrame) -> None:
 
 
     #3. Conteo de empresas
-    
-    #María Paula aquí te pongo la parte del código,muchas gracias por tu ayuda :)
-    #Te lo dejo definido para que no te toque cambiar el word, solo no te olvides que debe retornar un escalar 
-    #Que obligatoriamente se llame conteo_emp, sino me avisas y se ajusta después. 
-    
-    conteo_emp = 6101
+    conteo_empr_df = no_mineras_df.groupby(correlativas(4))[correlativas[9]].sum().reset_index()
+
+    # Filtrar las filas donde la columna '2023 USD (Ene-Jul)' es mayor que 10000
+
+    conteo_limpio = conteo_empr_df[conteo_empr_df[correlativas[9]] > 10000]
+
+    # Contar los valores únicos en la columna 'Nit Exportador'
+
+    conteo_empresas = conteo_limpio[correlativas[4]].nunique() -1
+
+
+ 
     
     #4. Va el disclaimer. El tipo de dato es una tupla entonces se necesita referenciar la pos 0 de la tupla. 
     disclaimer = ("Vale la pena tener en cuenta que los datos que arroja el DANE/DIAN mes a mes: "
@@ -61,7 +105,7 @@ def totales(totales_df: pd.DataFrame) -> None:
         "expt_act_tot_no_min": expt_act_tot_no_min,
         "tagvar_nm_tot": tagvar_nm_tot,
         "var_nm_tot": var_nm_tot,
-        "conteo_emp": conteo_emp,
+        "conteo_emp": conteo_empresas,
         "expt_ant_tot_no_min": expt_ant_tot_no_min	
     }
 
@@ -69,7 +113,7 @@ def totales(totales_df: pd.DataFrame) -> None:
 #Se va a hacer una función para el resto del análisis, con solo las no mineras para simplificar los cálculos. 
 #Tecnicamente no retorna un str sino que retorna un doc de word pero bueno es lo que hay jajaja
 
-def no_mineras(df: pd.DataFrame,vars_from_totales) -> str:
+def no_mineras(df: pd.DataFrame,vars_from_totales:dict,vars_from_mes_ano:dict) -> str:
     ####################Variables de totales necesarias para esta funcion porque el docx se genera aca#############################
     ano_actual = vars_from_totales["ano_actual"]
     ano_anterior = vars_from_totales["ano_anterior"]
@@ -80,8 +124,10 @@ def no_mineras(df: pd.DataFrame,vars_from_totales) -> str:
     expt_act_tot_no_min = vars_from_totales["expt_act_tot_no_min"]
     tagvar_nm_tot = vars_from_totales["tagvar_nm_tot"]
     var_nm_tot = vars_from_totales["var_nm_tot"]
-    conteo_emp = vars_from_totales["conteo_emp"]
+    conteo_empresas = vars_from_totales["conteo_empresas"]
     expt_ant_tot_no_min = vars_from_totales["expt_ant_tot_no_min"]
+    mes=vars_from_mes_ano["mes"]
+    ano=vars_from_mes_ano["ano"]
     ###############################################################################################################################
   
     # Se genera otro df de no mineras en este punto ya se tienen en cuenta las correlativas
@@ -347,7 +393,8 @@ def no_mineras(df: pd.DataFrame,vars_from_totales) -> str:
     "formatted_variations_companies": formatted_variations_companies,
     "varianza_empresas": varianza_empresas,
     "tag_var_emp": tag_var_emp,
+    "conteo_empresas": conteo_empresas,
     }
 
-path=r"D:\usuarios\Pvein2\OneDrive - PROCOLOMBIA\Escritorio\Francisco\Corrección Resumen Export (Doc) (S)\Base.csv"
-df=pd.read_csv(path,sep=";",encoding="latin-1",decimal=",",thousands=".")
+#path=r"D:\usuarios\Pvein2\OneDrive - PROCOLOMBIA\Escritorio\Francisco\Corrección Resumen Export (Doc) (S)\Base.csv"
+#df=pd.read_csv(path,sep=";",encoding="latin-1",decimal=",",thousands=".")

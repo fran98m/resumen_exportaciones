@@ -1,34 +1,52 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
-from threading import Thread
 import os
-import time
 import importar
 import re
 import new as datos
 import config
+import procesamiento_en_word as datos
 
 file_path = None
 
 def select_file():
     global df, file_path
-    file_path = filedialog.askopenfilename(title="Select Excel File", filetypes=[("Excel Files", "*.xls;*.xlsx;*.xlsm;*.xlsb"),("Text Files", "*.txt","*.csv")])
+    filetypes = [("Excel Files", ("*.xls", "*.xlsx", "*.xlsm", "*.xlsb")), ("Text Files", "*.txt"), ("CSV Files", "*.csv")]
+    file_path = filedialog.askopenfilename(title="Select Excel File", filetypes=[])
     ano_mes()
 
+    # Reading the file using the import_data_from_excel function
+    df = importar.import_data_from_excel(file_path)
+    
+    # Extracting year and month using the ano_mes function
+    datos.ano_mes(df)
+    vars_from_mes_ano = datos.mes_ano(df) 
+    # Processing the data using the totales and no_mineras functions
+    vars_from_totales = datos.totales(df,vars_from_mes_ano)
+    vars_from_no_mineras = datos.no_mineras(df, vars_from_totales,vars_from_mes_ano)
+    
+    # Generating the Word document
+    from procesamiento_en_word import generar_docx  # Importing generar_docx
+    resumen = generar_docx(vars_from_totales, vars_from_no_mineras)
+    resumen.save("path_where_you_want_to_save.docx")  # Modify this path as needed
+
+
 def ano_mes():
-    if file_path:
-        base_name = os.path.basename(file_path)
-        filename_without_extension = os.path.splitext(base_name)[0] #Elimina la extensión del archivo
-        # Extract year and month from the filename
-        match = re.search(r'(\d{4})\s*\((\w+)\)', filename_without_extension) #Para buscar el año se usa d{4} y para el mes \w+ donde d es para digitos y w para letras, el 4 indica 4 digitos seguidos y el w dentro del parentesis indica palabra dentro de un parentesis
-        if match:
-            #Se añaden a config para poder importar estas variables en el módulo de procesamiento de datos 
-            config.ano = match.group(1)  # El primer grupo es el año
-            config.mes = match.group(2)  # Se va a tomar Julio sin los paréntesis
-            print(config.ano)
-            print(config.mes)
 
-
+    # Reading the file using the import_data_from_excel function
+    df = importar.import_data_from_excel(file_path)
+    
+    # Extracting year and month using the ano_mes function
+    datos.mes_ano(df)
+    
+    # Processing the data using the totales and no_mineras functions
+    vars_from_totales = datos.totales(df)
+    vars_from_no_mineras = datos.no_mineras(df, vars_from_totales)
+    
+    # Generating the Word document
+    from procesamiento_en_word import generar_docx  # Importing generar_docx
+    resumen = generar_docx(vars_from_totales, vars_from_no_mineras)
+    resumen.save("path_where_you_want_to_save.docx")  # Modify this path as needed
 
 app = tk.Tk()
 app.title("Automatización Resumen Exportaciones")
