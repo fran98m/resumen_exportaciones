@@ -12,7 +12,7 @@ file_path = None
 
 def select_file():
     global df, file_path
-    file_path = filedialog.askopenfilename(title="Select Excel File", filetypes=[("Excel Files", "*.xls;*.xlsx;*.xlsm;*.xlsb")])
+    file_path = filedialog.askopenfilename(title="Select Excel File", filetypes=[("Excel Files", "*.xls;*.xlsx;*.xlsm;*.xlsb","Text Files", "*.txt","*.csv")])
     ano_mes()
 
 def ano_mes():
