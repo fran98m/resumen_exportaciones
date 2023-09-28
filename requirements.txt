@@ -1,0 +1,6 @@
+python==3.11.5
+pandas==1.4.0
+openpyxl==3.0.7
+python-docx==0.8.11
+tkinter==8.6  # This comes bundled with Python, but it's good to mention.
+pyxlsb==1.0.8
