@@ -33,7 +33,6 @@ def import_data_from_excel(file_path):
     else:
         df = pd.read_excel(file_path, sheet_name=1, skiprows=range(5), usecols=columns_to_select_excel)
     
-    print(df.head(3))
     return df
 
 

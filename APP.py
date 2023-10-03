@@ -4,6 +4,7 @@ import os
 import importar
 import new as datos
 import config
+import traceback
 from procesamiento_en_word import generar_docx
 
 def select_file():
@@ -31,10 +32,14 @@ def select_file():
         resumen.save(output_path)
 
         # Notify the user that the document has been generated
-        messagebox.showinfo("Success", f"Document generated and saved as {output_path}")
+        messagebox.showinfo("Éxito", f"Se creó el documento lo puede encontrar en: {output_path}")
 
     except Exception as e:
-        messagebox.showerror("Error", f"An error occurred: {str(e)}")
+        messagebox.showerror("Error", f"Ocurrió el siguiente error: {str(e)}")
+        error_traceback = traceback.format_exc()
+
+        print(e)
+        print(error_traceback)
 
     finally:
         # Close the Tkinter window after processing
@@ -52,13 +57,13 @@ if __name__ == "__main__":
     #Aquí se pone la imagen de Procolombia
     corporate_image_path = r"D:\usuarios\Pvein2\OneDrive - PROCOLOMBIA\Escritorio\Francisco\Corrección Resumen Export (Doc) (S)\Procolombia.PNG"  # Replace with your image path
     corporate_image = tk.PhotoImage(file=corporate_image_path)
-    image_label = Label(app, image=corporate_image, bg="#f0f0f0")
+    image_label = Label(app,bg="#87CEFA",image=corporate_image)
     image_label.pack(pady=20)  # Place the image with some padding
     
     #Finalmente se añade una etiqueta con quien desarrolló la aplicación    
     
     label_text = "Herramienta desarrollada por la GIC Procolombia (Coordinación de Analítica)"
-    label = tk.Label(app, text=label_text, bg='#D9E5E9', font=('Arial', 12))
+    label = tk.Label(app, text=label_text,bg="#87CEFA", font=('Arial', 12))
     label.pack(side=tk.BOTTOM, pady=10) 
 
 
