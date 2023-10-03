@@ -19,6 +19,8 @@ Esta aplicación procesa y genera reportes basados en datos de exportaciones. Ut
 - Ejecute APP.py para iniciar la aplicación.
 - Siga las instrucciones en pantalla para cargar y procesar los datos.
 - La aplicación generará un documento de Word con el análisis y reporte basados en los datos proporcionados.
+- **Use la correlativa de acuerdo al mes en el que se encuentra, si no va a tener errores de código a la hora de importar el Excel** 
+
 ## Contribuciones
 - Si desea contribuir al proyecto, realice un "fork" del repositorio, haga sus cambios y luego envíe un "pull request".
 
