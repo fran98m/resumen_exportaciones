@@ -76,9 +76,10 @@ def totales(totales_df: pd.DataFrame,vars_from_ano_mes:dict) -> None:
 
 
     #3. Conteo de empresas
-    conteo_empr_df = no_mineras_df.groupby(correlativas[4])[correlativas[9]].sum().reset_index()
+    nmc=no_mineras_df.copy()
+    conteo_empr_df = nmc.groupby(correlativas[4])[correlativas[9]].sum().reset_index()
 
-    # Filtrar las filas donde la columna '2023 USD (Ene-Jul)' es mayor que 10000
+    # Filtrar las filas donde la columna correlativas[9] es mayor que 10000
 
     conteo_limpio = conteo_empr_df[conteo_empr_df[correlativas[9]] > 10000]
 
@@ -155,10 +156,10 @@ def no_mineras(df: pd.DataFrame,vars_from_totales:dict,vars_from_mes_ano:dict) -
  ###################################################################################################################   
     #1. Análisis por países
     #Resumen Inicial:
-    #td_export_10_paises = df.groupby("Pais Destino")[["2023 USD (Ene-Jul)", "2022 USD (Ene-Jul)"]].sum().reset_index()
+    #td_export_10_paises = df.groupby("Pais Destino")[["2023 USD (Ene-Jul)", correlativas[8]]].sum().reset_index()
     #primeros_10_dest = td_export_10_paises.sort_values(by="2023 USD (Ene-Jul)", ascending=False).head(10)
     #total_dest_act=primeros_10_dest["2023 USD (Ene-Jul)"].sum()
-    #total_dest_ant=primeros_10_dest["2022 USD (Ene-Jul)"].sum()
+    #total_dest_ant=primeros_10_dest[correlativas[8]].sum()
     #variacion_destinos=((total_dest_act-total_dest_ant)/total_dest_ant)*100
     #tag_var_dest="crecimiento" if variacion_destinos>0 else "decrecimiento"
     #porcentsaje_destinos=(total_dest_act/expt_act_tot_no_min)*100
@@ -280,19 +281,23 @@ def no_mineras(df: pd.DataFrame,vars_from_totales:dict,vars_from_mes_ano:dict) -
 
     # Resumen inicial 
       #Variacion
-    primer_paso_var_emp=no_mineras_df.groupby(correlativas[5])[correlativas[9]].sum().nlargest(10).index
-    segundo_paso_var_emp = no_mineras_df[no_mineras_df[correlativas[5]].isin(primer_paso_var_emp)]
-    tercer_paso_var_emp = segundo_paso_var_emp.groupby(correlativas[5])[[correlativas[9], correlativas[8]]].sum()
-    tercer_paso_var_emp["Variacion"] = ((tercer_paso_var_emp[correlativas[9]] - tercer_paso_var_emp[correlativas[8]]) 
-                                         / tercer_paso_var_emp[correlativas[8]]) * 100
-    
-    valor_total_top_10_act_emp=tercer_paso_var_emp[correlativas[9]].sum()
-    valor_total_top_10_ant_emp=tercer_paso_var_emp[correlativas[8]].sum()
-    varianza_empresas=((valor_total_top_10_act_emp-valor_total_top_10_ant_emp)/valor_total_top_10_ant_emp)*100 
-    
-    tag_var_emp="crecimiento" if varianza_empresas>0 else "decrecimiento"
-    #Porcentaje
-    percentage_export_top_10=valor_total_top_10_act_emp/expt_act_tot_no_min*100
+    datos_empresas = no_mineras_df.groupby(correlativas[5]).agg({
+    correlativas[8]: 'sum',
+    correlativas[9]: 'sum'
+                                })
+    #Se eliminan los datos de no definido
+    top_10_grouped_act = datos_empresas.drop('NO DEFINIDO', errors='ignore').nlargest(10, correlativas[9])
+    # Se calculan los totales
+    total_exports_grouped_ant = top_10_grouped_act[correlativas[8]].sum()
+    total_exports_grouped_act = top_10_grouped_act[correlativas[9]].sum()
+    #Se calcula la variación
+    variation_grouped = total_exports_grouped_act - total_exports_grouped_ant
+    variacion_empresas_res = (variation_grouped / total_exports_grouped_ant) * 100
+    #Se calcula el porcentaje
+    overall_total_2023 = no_mineras_df[correlativas[9]].sum()
+    porcentaje_top10_emp = (total_exports_grouped_act / overall_total_2023) * 100
+    tag_var_empresas="crecimiento" if variacion_empresas_res>0 else "decrecimiento"
+
 
     #print(analisis_empresas)
     
@@ -301,9 +306,9 @@ def no_mineras(df: pd.DataFrame,vars_from_totales:dict,vars_from_mes_ano:dict) -
     #3. Analisis por producto
     #Resumen 
     #Se calculan los 10 principales productos
-    top_10_productos_act = df.groupby(correlativas[3]).agg({correlativas[9]: 'sum'}).nlargest(10, correlativas[9])
+    top_10_productos_act = no_mineras_df.groupby(correlativas[3]).agg({correlativas[9]: 'sum'}).nlargest(10, correlativas[9])
     #Se encuentra el valor para 2022
-    top_10_productos_ant = df[df[correlativas[3]].isin(top_10_productos_act.index)].groupby(correlativas[3]).agg({correlativas[8]: 'sum'})
+    top_10_productos_ant = no_mineras_df[no_mineras_df[correlativas[3]].isin(top_10_productos_act.index)].groupby(correlativas[3]).agg({correlativas[8]: 'sum'})
     #Se calculan los totales para los productos
     total_export_2022 = top_10_productos_ant[correlativas[8]].sum()
     total_export_2023 = top_10_productos_act[correlativas[9]].sum()
@@ -363,7 +368,7 @@ def no_mineras(df: pd.DataFrame,vars_from_totales:dict,vars_from_mes_ano:dict) -
     grouped_by_departamento["Tendencia"] = grouped_by_departamento["Variacion_dep"].apply(lambda x: "crecimiento" if x > 0 else ("decrecimiento" if x < 0 else "no cambió"))
 
     # Calculate the percentage of variance
-    grouped_by_departamento["Variance Percentage"] = round((grouped_by_departamento["Variacion_dep"] / grouped_by_departamento["2022 USD (Ene-Jul)"]) * 100, 1)
+    grouped_by_departamento["Variance Percentage"] = round((grouped_by_departamento["Variacion_dep"] / grouped_by_departamento[correlativas[8]]) * 100, 1)
 
     # Sorting by the 2023 values to get the Top 5 departments
     top_5_departamentos = grouped_by_departamento.sort_values(correlativas[9], ascending=False).head(5)
@@ -421,29 +426,36 @@ def no_mineras(df: pd.DataFrame,vars_from_totales:dict,vars_from_mes_ano:dict) -
 
     #print(results_venezuela)
     return {
-        ##destinos
+    
+    ##destinos
     "tag_var_dest": tag_top_10_dest,
     "variacion_destinos": variacion_top10destinos,
     "porcentaje_destinos": porcentaje_destinos,
     "agrupado_por_pais": agrupado_por_pais,
     "datos_principales_exportadores": datos_principales_exportadores,
     "exportado_10_principales": total_exportado_10dest,
-    "percentage_export_top_10": percentage_export_top_10,
+
     ##Por razon social
-    "analisis_empresas": analisis_empresas,"varianza_empresas": varianza_empresas,
-    "tag_var_emp": tag_var_emp,
+    "analisis_empresas": analisis_empresas,
+    "var_empresas_resumen": variacion_empresas_res,
+    "tag_var_empresas": tag_var_empresas,
+    "porcentaje_top10_emp": porcentaje_top10_emp,
     "conteo_empresas": conteo_empresas,
+    "top_10_grouped_act": total_exports_grouped_act,
+    
     #Por subsectores
     "analisis_subsectores": analisis_subsectores,
     "total_productos": total_export_2023,
     "var_productos":variacion_productos,
     "tag_var_prod":tag_var_prod,
+    
     #Por departamentos
     "grouped_by_departamento": grouped_by_departamento,
     "top_5_departamentos": top_5_departamentos,
     "total_exports": total_exports,
     "percentage_of_total": percentage_of_total,
     "combined_percentage_variation": combined_percentage_variation,
+    
     #Venezuela
     "results_venezuela": results_venezuela,
     "growth_label_venezuela": growth_label_venezuela,

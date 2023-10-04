@@ -23,11 +23,9 @@ def generar_docx(vars_from_totales:dict,vars_from_no_mineras: dict,vars_from_mes
     agrupado_por_pais=vars_from_no_mineras["agrupado_por_pais"]
     datos_principales_exportadores=vars_from_no_mineras["datos_principales_exportadores"]
     exportado_10_principales=vars_from_no_mineras["exportado_10_principales"]
-    percentage_export_top_10=vars_from_no_mineras["percentage_export_top_10"]
     analisis_empresas=vars_from_no_mineras["analisis_empresas"]
     analisis_subsectores=vars_from_no_mineras["analisis_subsectores"]
     top_5_departamentos=vars_from_no_mineras["top_5_departamentos"]
-    total_exports= vars_from_no_mineras["total_exports"]
     percentage_of_total= vars_from_no_mineras["percentage_of_total"]
     combined_percentage_variation=vars_from_no_mineras["combined_percentage_variation"]
     results_venezuela=vars_from_no_mineras["results_venezuela"]
@@ -35,14 +33,17 @@ def generar_docx(vars_from_totales:dict,vars_from_no_mineras: dict,vars_from_mes
     variation_venezuela=vars_from_no_mineras["variation_venezuela"]
     top_5_sectors_venezuela=vars_from_no_mineras["top_5_sectors_venezuela"]
     formatted_variations_companies=vars_from_no_mineras["formatted_variations_companies"]
-    varianza_empresas=vars_from_no_mineras["varianza_empresas"]
-    tag_var_emp=vars_from_no_mineras["tag_var_emp"]
     mes=vars_from_mes_ano["mes"]
     ano=vars_from_mes_ano["ano"]
     ano_ant=vars_from_mes_ano["ano_ant"]
     total_productos=vars_from_no_mineras["total_productos"]
     variacion_productos=vars_from_no_mineras["var_productos"]
     tag_var_productos=vars_from_no_mineras["tag_var_prod"]
+    var_empresas_resumen=vars_from_no_mineras["var_empresas_resumen"]
+    tag_var_emp=vars_from_no_mineras["tag_var_empresas"]
+    porcentaje_top10_emp=vars_from_no_mineras["porcentaje_top10_emp"]
+    valor_exp_top_10_emp=vars_from_no_mineras["top_10_grouped_act"]
+
 
 
 ##############################################Inicialización del documento############################################################################################
@@ -56,17 +57,17 @@ def generar_docx(vars_from_totales:dict,vars_from_no_mineras: dict,vars_from_mes
 
     # Se genera el título de la sección del resumen inicial 
     
-    doc.add_heading(f'EXPORTACIONES Enero - {vars_from_mes_ano["mes"]} -- {vars_from_mes_ano["ano"]} (DANE-DIAN)', 1)
+    doc.add_heading(f'EXPORTACIONES Enero - {vars_from_mes_ano["mes"]} de {vars_from_mes_ano["ano"]} (DANE-DIAN)', 1)
 
     # Totales
     p = doc.add_paragraph()
     p.add_run('- ').bold = True
-    p.add_run(f"Las cifras Enero - {vars_from_mes_ano['mes']} de {vars_from_mes_ano['ano']}, las exportaciones totales de Colombia fueron USD$ {format_to_millions(vars_from_totales['expt_act_tot'])}, con un {vars_from_totales['tagvar_tot']} del {vars_from_totales['var_exp_tot']:.1f}% frente al mismo periodo de {vars_from_mes_ano['ano_ant']} USD$ {format_to_millions(vars_from_totales['expt_ant_tot'])}.")
+    p.add_run(f"Las cifras Enero - {vars_from_mes_ano['mes']} de {vars_from_mes_ano['ano']}, las exportaciones totales de Colombia fueron USD$ {format_to_millions(vars_from_totales['expt_act_tot'])} millones, con un {vars_from_totales['tagvar_tot']} del {vars_from_totales['var_exp_tot']:.1f}% frente al mismo periodo de {vars_from_mes_ano['ano_ant']} USD$ {format_to_millions(vars_from_totales['expt_ant_tot'])} millones.")
 
     # No mineras
     p = doc.add_paragraph()
     p.add_run('- ').bold = True
-    p.add_run(f"Entre Enero - {vars_from_mes_ano['mes']} de {vars_from_mes_ano['ano']}, las exportaciones no minero energéticas de Colombia fueron USD$ {format_to_millions(vars_from_totales['expt_act_tot_no_min'])}, con un {vars_from_totales['tagvar_nm_tot']} del {vars_from_totales['var_nm_tot']:.1f}% de las exportaciones del mismo periodo de {vars_from_mes_ano['ano_ant']} USD$ {format_to_millions(vars_from_totales['expt_ant_tot_no_min'])}.")
+    p.add_run(f"Entre Enero - {vars_from_mes_ano['mes']} de {vars_from_mes_ano['ano']}, las exportaciones no minero energéticas de Colombia fueron USD$ {format_to_millions(vars_from_totales['expt_act_tot_no_min'])} millones, con un {vars_from_totales['tagvar_nm_tot']} del {vars_from_totales['var_nm_tot']:.1f}% de las exportaciones del mismo periodo de {vars_from_mes_ano['ano_ant']} USD$ {format_to_millions(vars_from_totales['expt_ant_tot_no_min'])} millones.")
 
     # Conteo Empresas
     p = doc.add_paragraph()
@@ -105,9 +106,9 @@ def generar_docx(vars_from_totales:dict,vars_from_no_mineras: dict,vars_from_mes
 # 2. Top 10 empresas exportadoras no minero energéticas Enero -mes actual, año actual
 
     doc.add_heading(f'Top 10 empresas exportadoras no minero energéticas Enero -{vars_from_mes_ano["mes"]} de {vars_from_mes_ano["ano"]}', level=1)
-    doc.add_paragraph(f'- Las 10 principales empresas exportadoras no minero energéticas del país suman total USD {format_to_millions(exportado_10_principales)} millones.')
-    doc.add_paragraph(f'- Se ve un: {tag_var_emp} de sus exportaciones en {varianza_empresas:.1f}% frente al mismo periodo del año {vars_from_mes_ano["ano_ant"]}.')
-    doc.add_paragraph(f'- Concentran el {percentage_export_top_10:.1f}% de las exportaciones no minero energéticas de Colombia entre Enero – {vars_from_mes_ano["mes"]} {vars_from_mes_ano["ano"]}.')
+    doc.add_paragraph(f'- Las 10 principales empresas exportadoras no minero energéticas del país suman total USD {format_to_millions(valor_exp_top_10_emp)} millones.')
+    doc.add_paragraph(f'- Se ve un: {tag_var_emp} de sus exportaciones en {var_empresas_resumen:.1f}% frente al mismo periodo del año {vars_from_mes_ano["ano_ant"]}.')
+    doc.add_paragraph(f'- Concentran el {porcentaje_top10_emp:.1f}% de las exportaciones no minero energéticas de Colombia entre Enero – {vars_from_mes_ano["mes"]} {vars_from_mes_ano["ano"]}.')
     doc.add_paragraph()  # Linea nueva en blanco para formato. 
     # Company details
     for idx, company in enumerate(analisis_empresas, start=1):
