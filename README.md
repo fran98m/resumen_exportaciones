@@ -1,12 +1,5 @@
 # Resumen de Exportaciones Colombianas: 
 
-- Se automatizó la generación del resumen de exportaciones teniendo en cuenta nuestros datos 
-- Enrique agradezco mucho su apoyo adjunto está el proyecto y lo que falta arreglar:
-
-- Se necesita ajustar la variación en la parte de top 10 destinos de exportaciones, el resto está bien 
-- Se necesita Ajustar todo el resumen del top 10 de empressas exportadoras, los totales y las variaciones y el porcentaje
-- En productos(SUBSECTORES) se necesita ajustar la variación entre actual-anterior 
-
 ## Descripción
 Esta aplicación procesa y genera reportes basados en datos de exportaciones. Utiliza múltiples bibliotecas de Python, como pandas y docx, para analizar y presentar la información de manera efectiva.
 
@@ -14,7 +7,8 @@ Esta aplicación procesa y genera reportes basados en datos de exportaciones. Ut
 - Asegúrese de tener Python 3.11.5 instalado.
 - Clone este repositorio a su máquina local.
 - Navegue hasta el directorio del repositorio clonado.
-- Instale las dependencias necesarias usando el siguiente comando:
+- Instale las dependencias necesarias usando el siguiente comando: pip install -r https://raw.githubusercontent.com/fran98mon/resumen_exportaciones/main/requirements.txt *Nota: aveces y en mac toca usar pip3
+
 ## Uso
 - Ejecute APP.py para iniciar la aplicación.
 - Siga las instrucciones en pantalla para cargar y procesar los datos.
