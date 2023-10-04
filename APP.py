@@ -20,6 +20,9 @@ def select_file():
         # Reading the file using the import_data_from_excel function
         df = importar.import_data_from_excel(file_path)
         
+        # Disable the button after the file is loaded
+        select_button.config(state=tk.DISABLED)
+        
         # Extracting year and month using the ano_mes function
         vars_from_mes_ano = datos.mes_ano(df) 
         # Processing the data using the totales and no_mineras functions
@@ -40,11 +43,11 @@ def select_file():
 
         print(e)
         print(error_traceback)
-
+    
     finally:
-        # Close the Tkinter window after processing
-        if 'app' in locals():
-            app.destroy()
+        # Close the Tkinter window after processing, regardless of success or error
+        app.destroy()
+
 
 #Edición del diseño de la interfaz gráfica:
 if __name__ == "__main__":
