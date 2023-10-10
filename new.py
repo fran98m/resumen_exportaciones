@@ -30,7 +30,7 @@ def mes_ano(df: pd.DataFrame) -> (str, str):
     nombre_col = df.columns[9]
     
     # Use regex to extract year and month abbreviation
-    match = re.search(r'(\d{4}) .*?-([A-Za-z]{3})', nombre_col)
+    match = re.search(r'(\d{4}) .*?-([A-Za-z]{3})', str(nombre_col))
     
     if match:
         year = match.group(1)
