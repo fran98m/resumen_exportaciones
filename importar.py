@@ -22,7 +22,18 @@ Correlativa
 ***Una vez se tienen estas variables seleccionadas se deben poner en el orden que sale en la correlativa porque el codigo de procesamiento va a leer en ese orden el nuevo df 
 """
 
-def import_data_from_excel(file_path):
+def import_data_from_excel(file_path:str)->pd.DataFrame:
+    """
+    Importar datos de un archivo de Excel, CSV o TXT. Se manejan los archivos xlsb también.
+
+    Parámetros:
+    file_path -- Ruta del archivo a importar
+
+    Retorna:
+    Un dataframe con los datos importados
+
+    """
+
     # Columnas especificadas para seleccionar
     columns_to_select_excel = [0, 1, 2, 3, 6, 7, 8, 14, 35, 37]
 
@@ -34,13 +45,12 @@ def import_data_from_excel(file_path):
 
     try:
         if file_path.endswith('.xlsb'):
-        # Leer el encabezado por separado
-            header = pd.read_excel(file_path, sheet_name="BASE", engine='pyxlsb', nrows=0, usecols=columns_to_select_excel)
-        # Leer los datos
-            data = pd.read_excel(file_path, sheet_name="BASE", engine='pyxlsb', header=None, skiprows=5, usecols=columns_to_select_excel, dtype=column_data_types)
-        # Combinar el encabezado y los datos
+            # Leer el encabezado por separado
+            header = pd.read_excel(file_path, sheet_name=1, engine='pyxlsb', nrows=1, skiprows=5, usecols=columns_to_select_excel)
+            # Leer los datos
+            data = pd.read_excel(file_path, sheet_name=1, engine='pyxlsb', header=None, skiprows=6, usecols=columns_to_select_excel, dtype=column_data_types)
+            # Combinar el encabezado y los datos
             df = pd.concat([header, data])
-
 
         elif file_path.endswith('.txt') or file_path.endswith('.csv'):
             df = pd.read_csv(file_path, sep=";", thousands=".", decimal=",", encoding='latin-1', dtype=column_data_types)

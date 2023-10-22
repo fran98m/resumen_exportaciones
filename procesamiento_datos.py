@@ -8,7 +8,7 @@ import re
 
 #############################################################################################
 #Funciones Auxiliares para Sacar mes y año:
-def mes_ano(df: pd.DataFrame) -> (str, str):
+def mes_ano(df: pd.DataFrame) -> dict:
     # Dictionary of three-letter month abbreviations to full month names
     meses = {
         "Ene": "Enero",
@@ -36,15 +36,20 @@ def mes_ano(df: pd.DataFrame) -> (str, str):
         year = match.group(1)
         month_abbrev = match.group(2)
         month_full = meses.get(month_abbrev, month_abbrev)  # Get full month name or use abbreviation if not found
-        ano_ant=int(year)-1
-        ano_ant=str(ano_ant)
+        ano_ant = int(year) - 1
+        ano_ant = str(ano_ant)
         return {
             "mes": month_full,
             "ano": year,
             "ano_ant": ano_ant
         }
     else:
-        return None, None
+        return {
+            "mes": None,
+            "ano": None,
+            "ano_ant": None
+        }
+
 
 def totales(totales_df: pd.DataFrame,vars_from_ano_mes:dict) -> None:
     
