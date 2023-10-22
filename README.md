@@ -29,20 +29,30 @@ Este proyecto tiene como objetivo automatizar la generación de resúmenes sobre
 1. Clonar este repositorio:
    ```bash
    git clone [URL del repositorio]
+    ```
 2. Navegar al repositorio:
+    ```bash
     cd Resumen_Exportaciones
+    ```
 3. Instalar las dependencias:
+    ```bash
     pip install -r requirements.txt
+    ```
 4. Ejecutar el script:
+    ```python
     python main.py  
-    
+    ```
 #### Desde VSCode:
 1. Clonar el repositorio:
+    ```bash
     git clone [URL del repositorio]
-2. Instalar las dependencias:
-    pip install -r requierements.txt
-3. Ejecutar main.py desde la GUI
     ```
+2. Instalar las dependencias:
+    ```bash 
+    pip install -r requierements.txt
+    ```
+3. Ejecutar main.py desde la GUI
+    
 
 # Uso:
 
