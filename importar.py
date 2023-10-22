@@ -21,8 +21,6 @@ Correlativa
 **Nota en df=... y sale skiprows=range(5), pues esta es la posición donde comienza la base al momento ajustar acorde, no olvidar que se cuenta desde 0
 ***Una vez se tienen estas variables seleccionadas se deben poner en el orden que sale en la correlativa porque el codigo de procesamiento va a leer en ese orden el nuevo df 
 """
-import pandas as pd
-import pyxlsb
 
 def import_data_from_excel(file_path):
     # Columnas especificadas para seleccionar
@@ -36,12 +34,13 @@ def import_data_from_excel(file_path):
 
     try:
         if file_path.endswith('.xlsb'):
-            # Leer el encabezado por separado
-            header = pd.read_excel(file_path, sheet_name="BASE", engine='pyxlsb', nrows=1, usecols=columns_to_select_excel, dtype=str)
-            # Leer los datos
-            data = pd.read_excel(file_path, sheet_name="BASE", engine='pyxlsb', header=None, skiprows=6, usecols=columns_to_select_excel, dtype=column_data_types)
-            # Combinar el encabezado y los datos
+        # Leer el encabezado por separado
+            header = pd.read_excel(file_path, sheet_name="BASE", engine='pyxlsb', nrows=0, usecols=columns_to_select_excel)
+        # Leer los datos
+            data = pd.read_excel(file_path, sheet_name="BASE", engine='pyxlsb', header=None, skiprows=5, usecols=columns_to_select_excel, dtype=column_data_types)
+        # Combinar el encabezado y los datos
             df = pd.concat([header, data])
+
 
         elif file_path.endswith('.txt') or file_path.endswith('.csv'):
             df = pd.read_csv(file_path, sep=";", thousands=".", decimal=",", encoding='latin-1', dtype=column_data_types)

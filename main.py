@@ -3,8 +3,8 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QVBo
 from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtCore import Qt
 import os
-import importar
-import new as datos
+from importar import *
+from procesamiento_datos import *
 import config
 import traceback
 from procesamiento_en_word import generar_docx
@@ -36,8 +36,7 @@ class App(QMainWindow):
         layout = QVBoxLayout(self.central_widget)
 
         # Cargar y mostrar la imagen en una etiqueta
-        ruta_imagen = "/Users/franciscomontalvo/Documents/Resumen_Exportaciones/resumen_exportaciones-1/Procolombia.PNG"  # Asegúrate de ajustar esta ruta según tu necesidad
-        #ruta_imagen = os.path.join(os.path.dirname(__file__), "Procolombia.PNG")
+        ruta_imagen = os.path.join(os.path.dirname(__file__), "Procolombia.PNG")
         pixmap = QPixmap(ruta_imagen)
         self.lblImage = QLabel(self)
         self.lblImage.setPixmap(pixmap)
@@ -82,16 +81,16 @@ class App(QMainWindow):
             return
 
         try:
-            df = importar.import_data_from_excel(ruta_del_archivo)
+            df = import_data_from_excel(ruta_del_archivo)
             logging.info("Archivo importado con éxito.")
             
             self.btnSelect.setEnabled(False)  # Deshabilita el botón después de cargar el archivo
             
-            variables_desde_mes_ano = datos.mes_ano(df)
+            variables_desde_mes_ano = mes_ano(df)
             logging.info("Año y mes extraídos con éxito.")
             
-            variables_desde_totales = datos.totales(df, variables_desde_mes_ano)
-            variables_desde_no_mineras = datos.no_mineras(df, variables_desde_totales, variables_desde_mes_ano)
+            variables_desde_totales = totales(df, variables_desde_mes_ano)
+            variables_desde_no_mineras = no_mineras(df, variables_desde_totales, variables_desde_mes_ano)
             logging.info("Datos procesados con éxito.")
             
             resumen = generar_docx(variables_desde_totales, variables_desde_no_mineras, variables_desde_mes_ano)
@@ -100,7 +99,7 @@ class App(QMainWindow):
             logging.info(f"Documento generado con éxito y guardado en {ruta_de_salida}.")
 
             # Usamos QMessageBox para mostrar un mensaje de éxito
-            QMessageBox.information(self, "Éxito", f"Se creó el documento. Puedes encontrarlo en: {ruta_de_salida}")
+            QMessageBox.information(self, "**Éxito**", f"Se creó el documento. Puedes encontrarlo en: {ruta_de_salida}")
         
         except Exception as e:
             # Usamos QMessageBox para mostrar un mensaje de error

@@ -46,8 +46,8 @@ def mes_ano(df: pd.DataFrame) -> (str, str):
     else:
         return None, None
 
-###########################################################################################
 def totales(totales_df: pd.DataFrame,vars_from_ano_mes:dict) -> None:
+    
     ##################################### Resumen Inicial##############################################
     mes=vars_from_ano_mes["mes"]
     ano_actual=vars_from_ano_mes["ano"]
@@ -79,11 +79,28 @@ def totales(totales_df: pd.DataFrame,vars_from_ano_mes:dict) -> None:
 
     # Filtrar las filas donde la columna correlativas[9] es mayor que 10000
 
-    conteo_limpio = conteo_empr_df[conteo_empr_df[correlativas[9]] > 10000]
+    # Filtrando aquellas empresas que exportaron más en '2023 USD (Ene-Jul)' que en '2022 USD (Ene-Jul)'
+    # Y que 'Nit Exportador' sea diferente de '-1'
+    empresas_mas_ano = nmc[
+        (nmc.iloc[:,15] > nmc.iloc[:,14]) &
+        (nmc['Nit Exportador'] != "'-1")
+    ]['Nit Exportador'].nunique()
 
-    # Contar los valores únicos en la columna 'Nit Exportador'
+    empresas_menos_ano = nmc[
+        (nmc.iloc[:,15] < nmc.iloc[:,14]) &
+        (nmc['Nit Exportador'] != "'-1")
+    ]['Nit Exportador'].nunique()
 
-    conteo_empresas = conteo_limpio[correlativas[4]].nunique() -1
+    empresas_igual_ano = nmc[
+        (nmc.iloc[:,15] == nmc.iloc[:,14]) &
+        (nmc['Nit Exportador'] != "'-1")
+    ]['Nit Exportador'].nunique()
+    
+    # Empresas que exportaron por primera vez en '2023 USD (Ene-Jul)' y tenían 0 en los años anteriores
+    
+
+    num_empresas_nme = empresas_mas_ano+empresas_menos_ano+empresas_igual_ano
+
 
 
  
@@ -104,7 +121,7 @@ def totales(totales_df: pd.DataFrame,vars_from_ano_mes:dict) -> None:
         "expt_act_tot_no_min": expt_act_tot_no_min,
         "tagvar_nm_tot": tagvar_nm_tot,
         "var_nm_tot": var_nm_tot,
-        "conteo_emp": conteo_empresas,
+        "conteo_emp": num_empresas_nme,
         "expt_ant_tot_no_min": expt_ant_tot_no_min	
     }
 
