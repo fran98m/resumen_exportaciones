@@ -38,7 +38,17 @@ def import_data_from_excel(file_path:str)->pd.DataFrame:
     columns_to_select_excel = [0, 1, 2, 3, 6, 7, 8, 14, 35, 37]
 
     # Especificar el tipo de dato para la columna 4 (índice basado en 0)
-    column_data_types = {3: str}
+    column_data_types = {0:str, #Tipo
+                         1:str, #Cadena
+                         2:str, #Sector
+                         3:str, #Subsector
+                         6:str, #NIT
+                         7:str, #Razon Social
+                         8:str, #País Destino
+                         14:str, #Departamento Origen
+                         35:float, #2022 USD (Ene-Mes)
+                         37:float} #2023 USD (Ene-Mes)
+    
 
     # Inicializar un dataframe vacío
     df = pd.DataFrame()
@@ -46,11 +56,9 @@ def import_data_from_excel(file_path:str)->pd.DataFrame:
     try:
         if file_path.endswith('.xlsb'):
             # Leer el encabezado por separado
-            header = pd.read_excel(file_path, sheet_name=1, engine='pyxlsb', nrows=1, skiprows=5, usecols=columns_to_select_excel)
-            # Leer los datos
-            data = pd.read_excel(file_path, sheet_name=1, engine='pyxlsb', header=None, skiprows=6, usecols=columns_to_select_excel, dtype=column_data_types)
-            # Combinar el encabezado y los datos
-            df = pd.concat([header, data])
+            df = pd.read_excel(file_path, sheet_name=1, engine='pyxlsb', header=5, 
+                               usecols=columns_to_select_excel, dtype=column_data_types)
+
 
         elif file_path.endswith('.txt') or file_path.endswith('.csv'):
             df = pd.read_csv(file_path, sep=";", thousands=".", decimal=",", encoding='latin-1', dtype=column_data_types)

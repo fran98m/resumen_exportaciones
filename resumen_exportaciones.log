@@ -120,3 +120,21 @@ Traceback (most recent call last):
     raise KeyError(key) from err
 KeyError: '2023 USD (Ene-Ago)'
 
+2023-10-21 21:41:12,854 - INFO - Archivo importado con éxito.
+2023-10-21 21:41:19,144 - ERROR - Ocurrió un error: index 9 is out of bounds for axis 0 with size 0
+Traceback (most recent call last):
+  File "/Users/franciscomontalvo/Library/Python/3.9/lib/python/site-packages/pandas/core/indexes/range.py", line 982, in __getitem__
+    return self._range[new_key]
+IndexError: range object index out of range
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/franciscomontalvo/Documents/Resumen_Exportaciones/resumen_exportaciones-1/main.py", line 89, in seleccionar_archivo
+    variables_desde_mes_ano = mes_ano(df)
+  File "/Users/franciscomontalvo/Documents/Resumen_Exportaciones/resumen_exportaciones-1/procesamiento_datos.py", line 30, in mes_ano
+    nombre_col = df.columns[9]
+  File "/Users/franciscomontalvo/Library/Python/3.9/lib/python/site-packages/pandas/core/indexes/range.py", line 984, in __getitem__
+    raise IndexError(
+IndexError: index 9 is out of bounds for axis 0 with size 0
+
