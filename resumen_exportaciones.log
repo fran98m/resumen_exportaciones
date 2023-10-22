@@ -1,0 +1,47 @@
+2023-10-14 00:58:26,442 - ERROR - Ocurrió un error: name 'filedialog' is not defined
+Traceback (most recent call last):
+  File "/Users/franciscomontalvo/Documents/Resumen_Exportaciones/resumen_exportaciones-1/main.py", line 73, in App
+    ruta_del_archivo = filedialog.askopenfilename(title="Selecciona el archivo de Excel", filetypes=tipos_de_archivo)
+NameError: name 'filedialog' is not defined
+
+2023-10-14 01:02:15,533 - ERROR - Ocurrió un error: module 'importar' has no attribute 'importar_datos_desde_excel'
+Traceback (most recent call last):
+  File "/Users/franciscomontalvo/Documents/Resumen_Exportaciones/resumen_exportaciones-1/main.py", line 74, in seleccionar_archivo
+    df = importar.importar_datos_desde_excel(ruta_del_archivo)
+AttributeError: module 'importar' has no attribute 'importar_datos_desde_excel'
+
+2023-10-14 01:04:01,746 - INFO - Archivo importado con éxito.
+2023-10-14 01:04:01,749 - INFO - Año y mes extraídos con éxito.
+2023-10-14 01:04:05,481 - ERROR - Ocurrió un error: tuple indices must be integers or slices, not str
+Traceback (most recent call last):
+  File "/Users/franciscomontalvo/Documents/Resumen_Exportaciones/resumen_exportaciones-1/main.py", line 82, in seleccionar_archivo
+    variables_desde_totales = datos.totales(df, variables_desde_mes_ano)
+  File "/Users/franciscomontalvo/Documents/Resumen_Exportaciones/resumen_exportaciones-1/new.py", line 52, in totales
+    mes=vars_from_ano_mes["mes"]
+TypeError: tuple indices must be integers or slices, not str
+
+2023-10-14 01:12:26,822 - INFO - Archivo importado con éxito.
+2023-10-14 01:12:44,080 - ERROR - Ocurrió un error: index 9 is out of bounds for axis 0 with size 0
+Traceback (most recent call last):
+  File "/Users/franciscomontalvo/Library/Python/3.9/lib/python/site-packages/pandas/core/indexes/range.py", line 982, in __getitem__
+    return self._range[new_key]
+IndexError: range object index out of range
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/franciscomontalvo/Documents/Resumen_Exportaciones/resumen_exportaciones-1/main.py", line 79, in seleccionar_archivo
+    variables_desde_mes_ano = datos.mes_ano(df)
+  File "/Users/franciscomontalvo/Documents/Resumen_Exportaciones/resumen_exportaciones-1/new.py", line 30, in mes_ano
+    nombre_col = df.columns[9]
+  File "/Users/franciscomontalvo/Library/Python/3.9/lib/python/site-packages/pandas/core/indexes/range.py", line 984, in __getitem__
+    raise IndexError(
+IndexError: index 9 is out of bounds for axis 0 with size 0
+
+2023-10-14 01:14:43,054 - INFO - Archivo importado con éxito.
+2023-10-14 01:14:43,069 - INFO - Año y mes extraídos con éxito.
+2023-10-14 01:14:53,090 - INFO - Datos procesados con éxito.
+2023-10-14 01:15:08,452 - INFO - Documento generado con éxito y guardado en /Users/franciscomontalvo/Library/CloudStorage/OneDrive-PROCOLOMBIA/Escritorio/Francisco/Corrección Resumen Export (Doc) (S)/Resumen Exportaciones Enero - Agosto.docx.
+2023-10-14 01:20:59,551 - INFO - El usuario canceló la selección de archivo.
+2023-10-14 01:23:54,355 - INFO - El usuario canceló la selección de archivo.
+2023-10-14 01:28:38,285 - INFO - El usuario canceló la selección de archivo.

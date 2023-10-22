@@ -50,12 +50,10 @@ def mes_ano(df: pd.DataFrame) -> (str, str):
 def totales(totales_df: pd.DataFrame,vars_from_ano_mes:dict) -> None:
     ##################################### Resumen Inicial##############################################
     mes=vars_from_ano_mes["mes"]
-    ano=vars_from_ano_mes["ano"]    
+    ano_actual=vars_from_ano_mes["ano"]
+    ano_anterior=vars_from_ano_mes["ano_ant"]    
     #1. Primer Bullet
     
-    # Calcular años
-    ano_actual = correlativas[9]
-    ano_anterior = correlativas[8]
     
     # Usar correlativas para referenciar columnas
     # Calcular las sumas de exportación y el crecimiento

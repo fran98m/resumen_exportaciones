@@ -1,5 +1,6 @@
 import pandas as pd
 import pyxlsb
+
 """
 Correlativa
 -Esta correlativa se hace con el fin de que en dado caso que cambien las posiciones de las variables se ajuste solamente el número en el código
@@ -24,39 +25,40 @@ import pandas as pd
 import pyxlsb
 
 def import_data_from_excel(file_path):
-    # Specified columns to select
+    # Columnas especificadas para seleccionar
     columns_to_select_excel = [0, 1, 2, 3, 6, 7, 8, 14, 35, 37]
 
-    # Specify data type for column 4 (0-based index)
+    # Especificar el tipo de dato para la columna 4 (índice basado en 0)
     column_data_types = {3: str}
 
-    # Initialize an empty dataframe
+    # Inicializar un dataframe vacío
     df = pd.DataFrame()
 
     try:
         if file_path.endswith('.xlsb'):
-            # Read header separately
-            header = pd.read_excel(file_path, sheet_name=1, engine='pyxlsb', nrows=1, usecols=columns_to_select_excel, dtype=str)
-            # Read data
-            data = pd.read_excel(file_path, sheet_name=1, engine='pyxlsb', header=None, skiprows=6, usecols=columns_to_select_excel, dtype=column_data_types)
-            # Combine header and data
+            # Leer el encabezado por separado
+            header = pd.read_excel(file_path, sheet_name="BASE", engine='pyxlsb', nrows=1, usecols=columns_to_select_excel, dtype=str)
+            # Leer los datos
+            data = pd.read_excel(file_path, sheet_name="BASE", engine='pyxlsb', header=None, skiprows=6, usecols=columns_to_select_excel, dtype=column_data_types)
+            # Combinar el encabezado y los datos
             df = pd.concat([header, data])
 
         elif file_path.endswith('.txt') or file_path.endswith('.csv'):
             df = pd.read_csv(file_path, sep=";", thousands=".", decimal=",", encoding='latin-1', dtype=column_data_types)
 
         else:
-            # Read header separately
+            # Leer el encabezado por separado
             header = pd.read_excel(file_path, sheet_name=1, nrows=1, skiprows=5, usecols=columns_to_select_excel, dtype=str)
-            # Read data
+            # Leer los datos
             data = pd.read_excel(file_path, sheet_name=1, header=None, skiprows=6, usecols=columns_to_select_excel, dtype=column_data_types)
-            # Combine header and data
+            # Combinar el encabezado y los datos
             df = pd.concat([header, data])
 
+        # Si se importaron los datos correctamente, mostrar mensaje de éxito
+        print(f"Datos importados correctamente desde el archivo: {file_path}")
+
     except Exception as e:
-        print(f"Error reading file: {file_path}. Error: {e}")
+        # Si hubo un error al importar los datos, mostrar el mensaje de error
+        print(f"Error al leer el archivo: {file_path}. Error: {e}")
 
     return df
-
-
-
