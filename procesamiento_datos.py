@@ -1,7 +1,4 @@
 import pandas as pd
-from docx import Document
-from docx.shared import RGBColor, Pt
-from docx.enum.text import WD_ALIGN_PARAGRAPH
 from config import correlativas
 import re
 import logging
@@ -53,7 +50,7 @@ def mes_ano(df: pd.DataFrame) -> dict:
     
     else:
         e=Exception
-        logger_datos.error(f"No se pudo extraer el mes y el año por el siguiente error{e}",exc_info=True)
+        logger_datos.error(f"No se pudo extraer el mes y el año por el siguiente error: %s",e,exc_info=True)
         return {
             "mes": None,
             "ano": None,
@@ -112,8 +109,7 @@ def totales(totales_df: pd.DataFrame) -> dict:
             "NME Export Ant": expt_ant_tot_no_min	
         }
     except Exception as e:
-        logger_datos.error(f"Ocurrió un procesando los datos de totales: {e}",exc_info=True)
-
+        logger_datos.error(f"Ocurrió un procesando los datos de totales: %s",e,exc_info=True)
     
 def no_mineras(df: pd.DataFrame,vars_from_totales:dict) -> dict:
     """
@@ -441,6 +437,6 @@ def no_mineras(df: pd.DataFrame,vars_from_totales:dict) -> dict:
         "formatted_variations_companies": formatted_variations_companies
         }
     except Exception as e:
-        logger_datos.error(f"Ocurrió un procesando los datos de no mineras: {e}",exc_info=True)
+        logger_datos.error(f"Ocurrió un procesando los datos de no mineras: %s",e,exc_info=True)
 
 

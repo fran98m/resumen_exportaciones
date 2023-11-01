@@ -2,7 +2,7 @@ import pandas as pd
 import pyxlsb
 import logging
 
-logger = logging.getLogger('Resumen_Exportaciones')
+logger_imp = logging.getLogger('Resumen_Exportaciones')
 
 """
 Correlativa
@@ -72,10 +72,12 @@ def import_data_from_excel(file_path:str)->pd.DataFrame:
             # Leer el encabezado por separado
             df = pd.read_excel(file_path, sheet_name=1, engine='pyxlsb', header=5, 
                                usecols=columns_to_select_excel, dtype=column_data_types_excel)
-
+        
+            logger_imp.info(f"Se importaron los datos Excel (xlsb) correctamente desde el archivo: {file_path}")
 
         elif file_path.endswith('.txt') or file_path.endswith('.csv'):
             df = pd.read_csv(file_path, sep=";", thousands=".", decimal=",", encoding='latin-1', dtype=column_dtypes_csv)
+            logger_imp.info(f"Se importaron los datos CSV correctamente desde el archivo: {file_path}")
 
         else:
             # Leer el encabezado por separado
@@ -86,9 +88,9 @@ def import_data_from_excel(file_path:str)->pd.DataFrame:
             df = pd.concat([header, data])
 
         # Si se importaron los datos correctamente, mostrar mensaje de éxito
-        logging.info(f"Datos importados correctamente desde el archivo: {file_path}")
+        logging.info(f"Datos importados otro formato correctamente desde el archivo: {file_path}")
 
     except Exception as e:
         # Si hubo un error al importar los datos, mostrar el mensaje de error
-        print(f"Error al leer el archivo: {file_path}. Error: {e}",exec_info=True)
+        logger_imp.error(f"Error al importar el archivo: %s",e,exc_info=True)
     return df

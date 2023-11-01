@@ -595,3 +595,35 @@ UnboundLocalError: local variable 'value_in_millions' referenced before assignme
 2023-11-01 18:00:48,615 - INFO - Se generó el resumen de los departamentos
 2023-11-01 18:00:48,631 - INFO - Se generó el resumen de Venezuela
 2023-11-01 18:00:48,679 - INFO - Documento generado con éxito y guardado en /Users/franciscomontalvo/Library/CloudStorage/OneDrive-PROCOLOMBIA/Escritorio/Francisco/Corrección Resumen Export (Doc) (S)/Resumen Exportaciones Enero - Agosto.docx.
+2023-11-01 18:19:06,056 - ERROR - Ocurrió un error: _log() got an unexpected keyword argument 'exec_info'
+Traceback (most recent call last):
+  File "/Users/franciscomontalvo/Documents/ProColombia/resumen_exportaciones/importar.py", line 73, in import_data_from_excel
+    df = pd.read_excel(file_path, sheet_name=1, engine='pyxlsb', header=5,
+  File "/Users/franciscomontalvo/Library/Python/3.9/lib/python/site-packages/pandas/io/excel/_base.py", line 517, in read_excel
+    data = io.parse(
+  File "/Users/franciscomontalvo/Library/Python/3.9/lib/python/site-packages/pandas/io/excel/_base.py", line 1629, in parse
+    return self._reader.parse(
+  File "/Users/franciscomontalvo/Library/Python/3.9/lib/python/site-packages/pandas/io/excel/_base.py", line 931, in parse
+    raise err
+  File "/Users/franciscomontalvo/Library/Python/3.9/lib/python/site-packages/pandas/io/excel/_base.py", line 918, in parse
+    output[asheetname] = parser.read(nrows=nrows)
+  File "/Users/franciscomontalvo/Library/Python/3.9/lib/python/site-packages/pandas/io/parsers/readers.py", line 1748, in read
+    ) = self._engine.read(  # type: ignore[attr-defined]
+  File "/Users/franciscomontalvo/Library/Python/3.9/lib/python/site-packages/pandas/io/parsers/python_parser.py", line 289, in read
+    conv_data = self._convert_data(data)
+  File "/Users/franciscomontalvo/Library/Python/3.9/lib/python/site-packages/pandas/io/parsers/python_parser.py", line 340, in _convert_data
+    clean_dtypes = self._clean_mapping(self.dtype)
+  File "/Users/franciscomontalvo/Library/Python/3.9/lib/python/site-packages/pandas/io/parsers/base_parser.py", line 454, in _clean_mapping
+    col = self.orig_names[col]
+IndexError: list index out of range (sheet: 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/franciscomontalvo/Documents/ProColombia/resumen_exportaciones/main.py", line 97, in seleccionar_archivo
+    df = import_data_from_excel(ruta_del_archivo)
+  File "/Users/franciscomontalvo/Documents/ProColombia/resumen_exportaciones/importar.py", line 95, in import_data_from_excel
+    logger_imp.error(f"Error al importar el archivo: {e}",exec_info=True)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/logging/__init__.py", line 1475, in error
+    self._log(ERROR, msg, args, **kwargs)
+TypeError: _log() got an unexpected keyword argument 'exec_info'

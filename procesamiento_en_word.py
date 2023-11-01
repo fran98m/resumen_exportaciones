@@ -1,5 +1,5 @@
 from docx import Document
-from docx.shared import RGBColor, Pt
+from docx.shared import Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from config import correlativas
 import logging
@@ -238,7 +238,7 @@ def generar_docx(vars_from_totales:dict,vars_from_no_mineras: dict,vars_from_mes
         return doc
 
     except Exception as e:
-        logger_word.error(f"Error en la generación del word: {e}",exec_info=True)
+        logger_word.error(f"Error en la generación del word: %s",e,exec_info=True)
     
 #Funciones Auxiliares: 
 
