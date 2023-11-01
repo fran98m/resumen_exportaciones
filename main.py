@@ -1,21 +1,34 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QVBoxLayout, QFileDialog, QMessageBox, QWidget, QSizePolicy
 from PyQt5.QtGui import QPixmap, QFont
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer
 import os
 from importar import *
 from procesamiento_datos import *
-import config
-import traceback
 from procesamiento_en_word import generar_docx
 import logging
 import warnings
-import glob
 
 
 # Configuración de las advertencias para evitar mostrarlas innecesariamente
 warnings.filterwarnings("ignore")
 
+
+# Configura el logging
+logger = logging.getLogger('Resumen_Exportaciones')
+logger.setLevel(logging.INFO)
+
+# Crea un manejador de archivo para escribir mensajes de log en un archivo
+file_handler = logging.FileHandler('exportaciones_log.txt')
+file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+
+# Crea un manejador de flujo para escribir mensajes de log en la consola
+stream_handler = logging.StreamHandler()
+stream_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+
+# Añade los manejadores al logger
+logger.addHandler(file_handler)
+logger.addHandler(stream_handler)
 
 class App(QMainWindow):
     def __init__(self):
@@ -89,8 +102,8 @@ class App(QMainWindow):
             variables_desde_mes_ano = mes_ano(df)
             logging.info("Año y mes extraídos con éxito.")
             
-            variables_desde_totales = totales(df, variables_desde_mes_ano)
-            variables_desde_no_mineras = no_mineras(df, variables_desde_totales, variables_desde_mes_ano)
+            variables_desde_totales = totales(df)
+            variables_desde_no_mineras = no_mineras(df, variables_desde_totales)
             logging.info("Datos procesados con éxito.")
             
             resumen = generar_docx(variables_desde_totales, variables_desde_no_mineras, variables_desde_mes_ano)
@@ -104,10 +117,8 @@ class App(QMainWindow):
         except Exception as e:
             # Usamos QMessageBox para mostrar un mensaje de error
             QMessageBox.critical(self, "Error", f"Ocurrió el siguiente error: {str(e)}")
-            traza_del_error = traceback.format_exc()
-            logging.error(f"Ocurrió un error: {str(e)}\n{traza_del_error}")
-            print(e)
-            print(traza_del_error)
+            logging.error(f"Ocurrió un error: {e}",exc_info=True)
+            QTimer.singleShot(1000, self.close)
 
 
 if __name__ == '__main__':

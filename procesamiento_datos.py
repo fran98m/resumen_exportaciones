@@ -1,13 +1,15 @@
 import pandas as pd
-import os
 from docx import Document
 from docx.shared import RGBColor, Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from config import correlativas
 import re
+import logging
 
-#############################################################################################
-#Funciones Auxiliares para Sacar mes y año:
+logger = logging.getLogger(__name__)
+
+
+#Función Auxiliar para Sacar mes y año:
 def mes_ano(df: pd.DataFrame) -> dict:
     # Dictionary of three-letter month abbreviations to full month names
     meses = {
@@ -38,12 +40,16 @@ def mes_ano(df: pd.DataFrame) -> dict:
         month_full = meses.get(month_abbrev, month_abbrev)  # Get full month name or use abbreviation if not found
         ano_ant = int(year) - 1
         ano_ant = str(ano_ant)
+        logging.info(f"Exito en Mes y Año! El mes es: {month_full} y el año es: {year}")
         return {
             "mes": month_full,
             "ano": year,
             "ano_ant": ano_ant
         }
+    
     else:
+        e=Exception
+        logging.error(f"No se pudo extraer el mes y el año por el siguiente error{e}",exc_info=True)
         return {
             "mes": None,
             "ano": None,
@@ -51,15 +57,11 @@ def mes_ano(df: pd.DataFrame) -> dict:
         }
 
 
-def totales(totales_df: pd.DataFrame,vars_from_ano_mes:dict) -> None:
+def totales(totales_df: pd.DataFrame) -> dict:
     
-    ##################################### Resumen Inicial##############################################
-    mes=vars_from_ano_mes["mes"]
-    ano_actual=vars_from_ano_mes["ano"]
-    ano_anterior=vars_from_ano_mes["ano_ant"]    
-    #1. Primer Bullet
-    
-    
+# 1. Resumen Inicial:
+
+    #1. Primer Bullet    
     # Usar correlativas para referenciar columnas
     # Calcular las sumas de exportación y el crecimiento
     expt_act_tot = totales_df[correlativas[9]].sum()
@@ -69,7 +71,7 @@ def totales(totales_df: pd.DataFrame,vars_from_ano_mes:dict) -> None:
     tagvar_tot = "crecimiento" if var_exp_tot > 0 else "decrecimiento"
     
     #2. Segudo Bullet para las Exportaciones NME
-    no_mineras_df = totales_df[totales_df[correlativas[0]] == "No Mineras"]
+    no_mineras_df = totales_df[totales_df[correlativas[0]] == "No Mineras"] #Filtrado de la base para las NME
     
     #Se hace exactamente lo mismo que en el primer bullet pero con las exportaciones no mineras
     expt_act_tot_no_min = no_mineras_df[correlativas[9]].sum()
@@ -80,86 +82,50 @@ def totales(totales_df: pd.DataFrame,vars_from_ano_mes:dict) -> None:
 
     #3. Conteo de empresas
     nmc=no_mineras_df.copy()
-    conteo_empr_df = nmc.groupby(correlativas[4])[correlativas[9]].sum().reset_index()
-
-    # Filtrar las filas donde la columna correlativas[9] es mayor que 10000
-
-    # Filtrando aquellas empresas que exportaron más en '2023 USD (Ene-Jul)' que en '2022 USD (Ene-Jul)'
-    # Y que 'Nit Exportador' sea diferente de '-1'
-    empresas_mas_ano = nmc[
-        (nmc.iloc[:,15] > nmc.iloc[:,14]) &
-        (nmc['Nit Exportador'] != "'-1")
-    ]['Nit Exportador'].nunique()
-
-    empresas_menos_ano = nmc[
-        (nmc.iloc[:,15] < nmc.iloc[:,14]) &
-        (nmc['Nit Exportador'] != "'-1")
-    ]['Nit Exportador'].nunique()
-
-    empresas_igual_ano = nmc[
-        (nmc.iloc[:,15] == nmc.iloc[:,14]) &
-        (nmc['Nit Exportador'] != "'-1")
-    ]['Nit Exportador'].nunique()
+    #nmc = nmc[~nmc['CADENA*'].isin(['Mineras', 'Otros'])] #Filtra Mineras y otros. Solucion BF
+    conteo_df_agrupado = nmc.groupby('Nit Exportador').sum().reset_index()
+    # Filtrando empresas con ventas mayores a 10,000 en la última columna del DataFrame
+    mayores_10k = conteo_df_agrupado[conteo_df_agrupado[correlativas[9]] > 10000] #Filtrando empresas con ventas mayores a 10,000 en la última columna del DataFrame
+    conteo_empresas=mayores_10k[correlativas[4]].nunique() #Conteo de empresas
+    logging.info(f"El conteo de empresas es: {conteo_empresas}") 
     
-    # Empresas que exportaron por primera vez en '2023 USD (Ene-Jul)' y tenían 0 en los años anteriores
-    
-
-    num_empresas_nme = empresas_mas_ano+empresas_menos_ano+empresas_igual_ano
-
-
-
- 
-    
-    #4. Va el disclaimer. El tipo de dato es una tupla entonces se necesita referenciar la pos 0 de la tupla. 
-    disclaimer = ("Vale la pena tener en cuenta que los datos que arroja el DANE/DIAN mes a mes: "
-                  "tienen dos meses de rezago, no incluyen las exportaciones desde Zona Franca "
-                  "y no tienen en cuenta los servicios diferentes a editorial. Es decir, la cifra de "
-                  "exportaciones no minero energéticas puede ser mayor a la reportada")
-
     return {
-        "ano_actual": ano_actual,
-        "ano_anterior": ano_anterior,
-        "expt_act_tot": expt_act_tot,
-        "tagvar_tot": tagvar_tot,
-        "var_exp_tot": var_exp_tot,
-        "expt_ant_tot": expt_ant_tot,
-        "expt_act_tot_no_min": expt_act_tot_no_min,
-        "tagvar_nm_tot": tagvar_nm_tot,
-        "var_nm_tot": var_nm_tot,
-        "conteo_emp": num_empresas_nme,
-        "expt_ant_tot_no_min": expt_ant_tot_no_min	
+        "Total Export Act": expt_act_tot,
+        "Tag Totales": tagvar_tot,
+        "Varianza Totales": var_exp_tot,
+        "Exportaciones Totales Ant": expt_ant_tot,
+        "NME Export Act": expt_act_tot_no_min,
+        "Tag NME": tagvar_nm_tot,
+        "Varianza NME": var_nm_tot,
+        "Conteo": conteo_empresas,
+        "NME Export Ant": expt_ant_tot_no_min	
     }
-
+"""
+Esta función recibe un dataframe y un diccionario con los datos de totales. Para el resumen inicial del reporte
+Parámetros:
+df: dataframe
+Retorna:
+diccionario con los datos procesados en la funcion de totales
+"""
     
-#Se va a hacer una función para el resto del análisis, con solo las no mineras para simplificar los cálculos. 
-#Tecnicamente no retorna un str sino que retorna un doc de word pero bueno es lo que hay jajaja
-
-def no_mineras(df: pd.DataFrame,vars_from_totales:dict,vars_from_mes_ano:dict) -> str:
-    ####################Variables de totales necesarias para esta funcion porque el docx se genera aca#############################
-    ano_actual = vars_from_totales["ano_actual"]
-    ano_anterior = vars_from_totales["ano_anterior"]
-    expt_act_tot = vars_from_totales["expt_act_tot"]
-    tagvar_tot = vars_from_totales["tagvar_tot"]
-    var_exp_tot = vars_from_totales["var_exp_tot"]
-    expt_ant_tot = vars_from_totales["expt_ant_tot"]
-    expt_act_tot_no_min = vars_from_totales["expt_act_tot_no_min"]
-    tagvar_nm_tot = vars_from_totales["tagvar_nm_tot"]
-    var_nm_tot = vars_from_totales["var_nm_tot"]
-    conteo_empresas = vars_from_totales["conteo_emp"]
-    expt_ant_tot_no_min = vars_from_totales["expt_ant_tot_no_min"]
-    mes=vars_from_mes_ano["mes"]
-    ano=vars_from_mes_ano["ano"]
-    ###############################################################################################################################
+def no_mineras(df: pd.DataFrame,vars_from_totales:dict) -> dict:
+    """
+    Esta funcion calcula el resto de variables necesarias para el resumen.
+    Parámetros: df: dataframe
+    vars_from_totales: diccionario con los datos procesados en la funcion de totales
+    Retorna:
+    diccionario con los datos procesados en la funcion de totales
+    """
+    #Variables Auxiliares importadas de totales
+    expt_act_tot_no_min = vars_from_totales["NME Export Act"]
+    conteo_empresas = vars_from_totales["Conteo"]
   
-    # Se genera otro df de no mineras en este punto ya se tienen en cuenta las correlativas
+    # Se genera otro df de no mineras: 
     no_mineras_df = df[df[correlativas[0]] == "No Mineras"]
 
     #Se agrupa por país y se organizan los datos de mayor a menor para obtener los 10 países que más exportaron 
     agrupado_por_pais=no_mineras_df.groupby(correlativas[6])[correlativas[9]].sum().sort_values(ascending=False).head(10)
-    exportado_10_principales=agrupado_por_pais.sum()
     
-
-
   ################################################################################################  
     #0. Resumen Inicial
 
@@ -235,6 +201,7 @@ def no_mineras(df: pd.DataFrame,vars_from_totales:dict,vars_from_mes_ano:dict) -
                 .nlargest(4)  # Seleccionar 4 para tener espacio para eliminar 'NO DEFINIDO'
                 .drop('NO DEFINIDO', errors='ignore')
                 .nlargest(3))
+        logging.info(f"Se procesó el resumen de países exitosamente se tienen los siguientes datos{companies.keys()}")
         return companies
     #Función auxiliar para obtener la varianza de estos países
     def calculate_country_variance(pais:str):
@@ -253,7 +220,7 @@ def no_mineras(df: pd.DataFrame,vars_from_totales:dict,vars_from_mes_ano:dict) -
             "Variación": calculate_country_variance(pais),
             "Tag": "crecimiento" if calculate_country_variance(pais) > 0 else "decrecimiento"
         }
-    #print (datos_principales_exportadores)      
+    logging.info(f"Se procesó el resumen de países exitosamente se tienen los siguientes datos{datos_principales_exportadores.keys()}")
 ###################################################################################################################
     #2. Análisis por empresas
     #Resumen: 
@@ -317,12 +284,10 @@ def no_mineras(df: pd.DataFrame,vars_from_totales:dict,vars_from_mes_ano:dict) -
     overall_total_2023 = no_mineras_df[correlativas[9]].sum()
     porcentaje_top10_emp = (total_exports_grouped_act / overall_total_2023) * 100
     tag_var_empresas="crecimiento" if variacion_empresas_res>0 else "decrecimiento"
+    logging.info(f"Se procesó el resumen de empresas exitosamente se tienen los siguientes datos{analisis_empresas.keys()}")
 
-
-    #print(analisis_empresas)
     
 
-##########################################################################################
     #3. Analisis por producto
     #Resumen 
     #Se calculan los 10 principales productos
@@ -334,7 +299,7 @@ def no_mineras(df: pd.DataFrame,vars_from_totales:dict,vars_from_mes_ano:dict) -
     total_export_2023 = top_10_productos_act[correlativas[9]].sum()
     variacion_productos=((total_export_2023-total_export_2022)/total_export_2022)*100
     tag_var_prod="crecimiento" if variacion_productos>0 else "decrecimiento"
-
+    logging.info(f"Se procesó el resumen exitosamente")
     # Determinar los 3 principales departamentos de origen y cuánto fue enviado en USD desde esos orígenes para cada subsector
     top_10_subsectors_2023 = no_mineras_df.groupby(correlativas[3])[correlativas[9]].sum().nlargest(10)
     top_3_origins_by_subsector = {}
@@ -372,11 +337,11 @@ def no_mineras(df: pd.DataFrame,vars_from_totales:dict,vars_from_mes_ano:dict) -
             # Handle the case where the product wasn't present in 2022
             variation = 1  # or np.nan
         data["Variacion_sub"] = variation_sub
-        data["Tag"] = "crecimiento" if variation_sub >= 0 else "decrecimiento"    
+        data["Tag"] = "crecimiento" if variation_sub >= 0 else "decrecimiento"
+    logging.info(f"Se tienen datos de los siguientes subsectores:{analisis_subsectores.keys()}")    
 
 
-    #print(analisis_subsectores)
-##########################################################################################
+
     #4. Análisis por departamento
     # Grouping by "Departamento Origen" to sum the export values for 2022 and 2023
     grouped_by_departamento = no_mineras_df.groupby(correlativas[7])[[correlativas[8],correlativas[9]]].sum()
@@ -406,10 +371,8 @@ def no_mineras(df: pd.DataFrame,vars_from_totales:dict,vars_from_mes_ano:dict) -
     # Adding these calculations to the top_5_departamentos DataFrame
     top_5_departamentos.loc["COMBINED"] = [combined_value_2022, combined_value_2023, combined_variation, combined_percentage_variation, percentage_of_total]
 
-    #print(top_5_departamentos[[correlativas[8], correlativas[9], 'Variacion_dep', 'Tendencia', 'Variance Percentage']])
-    #print(top_5_departamentos)
+    logging.info(f"Se procesó el resumen de departamentos exitosamente se tienen los siguientes datos{top_5_departamentos.keys()}")
 
-#############################################################################################
     #5. Venezuela
     # Filtrar los datos para obtener solo las exportaciones a Venezuela con el nombre correcto
     venezuela_data = no_mineras_df[no_mineras_df[correlativas[6]] == 'Venezuela']
@@ -443,43 +406,43 @@ def no_mineras(df: pd.DataFrame,vars_from_totales:dict,vars_from_mes_ano:dict) -
         "Top 5 Empresas": [top_5_companies_venezuela],
         "Variación Empresas": [formatted_variations_companies]
     })
+    logging.info(f"Se procesó el resumen de Venezuela exitosamente")
 
-    #print(results_venezuela)
     return {
     
     ##destinos
-    "tag_var_dest": tag_top_10_dest,
-    "variacion_destinos": variacion_top10destinos,
-    "porcentaje_destinos": porcentaje_destinos,
+    "Destinos Tag": tag_top_10_dest,
+    "Destinos Varianza": variacion_top10destinos,
+    "Destinos Participacion": porcentaje_destinos,
     "agrupado_por_pais": agrupado_por_pais,
     "datos_principales_exportadores": datos_principales_exportadores,
-    "exportado_10_principales": total_exportado_10dest,
+    "Destinos Exportaciones": total_exportado_10dest,
 
     ##Por razon social
     "analisis_empresas": analisis_empresas,
-    "var_empresas_resumen": variacion_empresas_res,
-    "tag_var_empresas": tag_var_empresas,
-    "porcentaje_top10_emp": porcentaje_top10_emp,
-    "conteo_empresas": conteo_empresas,
-    "top_10_grouped_act": total_exports_grouped_act,
+    "RS Varianza": variacion_empresas_res,
+    "RS Tag": tag_var_empresas,
+    "RS Participacion": porcentaje_top10_emp,
+    "Conteo Empresas": conteo_empresas,
+    "RS Exportaciones": total_exports_grouped_act,
     
     #Por subsectores
     "analisis_subsectores": analisis_subsectores,
-    "total_productos": total_export_2023,
-    "var_productos":variacion_productos,
-    "tag_var_prod":tag_var_prod,
+    "Productos Exportaciones": total_export_2023,
+    "Productos Varianza":variacion_productos,
+    "Productos Tag":tag_var_prod,
     
     #Por departamentos
     "grouped_by_departamento": grouped_by_departamento,
     "top_5_departamentos": top_5_departamentos,
-    "total_exports": total_exports,
-    "percentage_of_total": percentage_of_total,
-    "combined_percentage_variation": combined_percentage_variation,
+    "Departamentos Exportaciones": total_exports,
+    "Departamentos Participacion": percentage_of_total,
+    "Departamentos Varianza": combined_percentage_variation,
     
     #Venezuela
     "results_venezuela": results_venezuela,
-    "growth_label_venezuela": growth_label_venezuela,
-    "variation_venezuela": variation_venezuela,
+    "Venezuela Tag": growth_label_venezuela,
+    "Venezuela Variacion": variation_venezuela,
     "top_5_sectors_venezuela": top_5_sectors_venezuela,
     "formatted_variations_companies": formatted_variations_companies
     }

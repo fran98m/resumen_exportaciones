@@ -38,7 +38,7 @@ def import_data_from_excel(file_path:str)->pd.DataFrame:
     columns_to_select_excel = [0, 1, 2, 3, 6, 7, 8, 14, 35, 37]
 
     # Especificar el tipo de dato para la columna 4 (índice basado en 0)
-    column_data_types = {0:str, #Tipo
+    column_data_types_excel = {0:str, #Tipo
                          1:str, #Cadena
                          2:str, #Sector
                          3:str, #Subsector
@@ -48,6 +48,17 @@ def import_data_from_excel(file_path:str)->pd.DataFrame:
                          14:str, #Departamento Origen
                          35:float, #2022 USD (Ene-Mes)
                          37:float} #2023 USD (Ene-Mes)
+    column_dtypes_csv={0:str, #Tipo
+                        1:str, #Cadena
+                        2:str, #Sector
+                        3:str, #Subsector
+                        4:str, #NIT
+                        5:str, #Razon Social
+                        6:str, #País Destino
+                        7:str, #Departamento Origen
+                        8:float, #2022 USD (Ene-Mes)
+                        9:float} #2023 USD (Ene-Mes)
+                        
     
 
     # Inicializar un dataframe vacío
@@ -57,17 +68,17 @@ def import_data_from_excel(file_path:str)->pd.DataFrame:
         if file_path.endswith('.xlsb'):
             # Leer el encabezado por separado
             df = pd.read_excel(file_path, sheet_name=1, engine='pyxlsb', header=5, 
-                               usecols=columns_to_select_excel, dtype=column_data_types)
+                               usecols=columns_to_select_excel, dtype=column_data_types_excel)
 
 
         elif file_path.endswith('.txt') or file_path.endswith('.csv'):
-            df = pd.read_csv(file_path, sep=";", thousands=".", decimal=",", encoding='latin-1', dtype=column_data_types)
+            df = pd.read_csv(file_path, sep=";", thousands=".", decimal=",", encoding='latin-1', dtype=column_dtypes_csv)
 
         else:
             # Leer el encabezado por separado
             header = pd.read_excel(file_path, sheet_name=1, nrows=1, skiprows=5, usecols=columns_to_select_excel, dtype=str)
             # Leer los datos
-            data = pd.read_excel(file_path, sheet_name=1, header=None, skiprows=6, usecols=columns_to_select_excel, dtype=column_data_types)
+            data = pd.read_excel(file_path, sheet_name=1, header=None, skiprows=6, usecols=columns_to_select_excel, dtype=column_data_types_excel)
             # Combinar el encabezado y los datos
             df = pd.concat([header, data])
 
