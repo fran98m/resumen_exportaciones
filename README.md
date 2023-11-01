@@ -43,9 +43,9 @@ Este proyecto tiene como objetivo automatizar la generación de resúmenes sobre
     python main.py  
     ```
 #### Desde VSCode:
-1. Clonar el repositorio:
+1. Clonar el repositorio desde la GUI:
     ```bash
-    git clone [URL del repositorio]
+    git clone https://github.com/fran98m/resumen_exportaciones
     ```
 2. Instalar las dependencias:
     ```bash 
