@@ -1,0 +1,7 @@
+2023-11-01 18:00:48,390 - INFO - Documento de Word inicializado.
+2023-11-01 18:00:48,438 - INFO - Resumen inicial procesado exitosamente .
+2023-11-01 18:00:48,490 - INFO - Se generó el resumen de los destinos
+2023-11-01 18:00:48,526 - INFO - Se generó el resumen de las empresas
+2023-11-01 18:00:48,571 - INFO - Se generó el resumen de los productos
+2023-11-01 18:00:48,615 - INFO - Se generó el resumen de los departamentos
+2023-11-01 18:00:48,631 - INFO - Se generó el resumen de Venezuela

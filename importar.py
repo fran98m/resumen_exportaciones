@@ -1,5 +1,8 @@
 import pandas as pd
 import pyxlsb
+import logging
+
+logger = logging.getLogger('Resumen_Exportaciones')
 
 """
 Correlativa
@@ -83,10 +86,9 @@ def import_data_from_excel(file_path:str)->pd.DataFrame:
             df = pd.concat([header, data])
 
         # Si se importaron los datos correctamente, mostrar mensaje de éxito
-        print(f"Datos importados correctamente desde el archivo: {file_path}")
+        logging.info(f"Datos importados correctamente desde el archivo: {file_path}")
 
     except Exception as e:
         # Si hubo un error al importar los datos, mostrar el mensaje de error
-        print(f"Error al leer el archivo: {file_path}. Error: {e}")
-
+        print(f"Error al leer el archivo: {file_path}. Error: {e}",exec_info=True)
     return df
