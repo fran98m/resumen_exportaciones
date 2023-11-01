@@ -2,7 +2,6 @@
 from docx import Document
 from docx.shared import RGBColor, Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from procesamiento_datos import totales, no_mineras, mes_ano
 from config import correlativas
 import logging
 
@@ -239,19 +238,31 @@ def generar_docx(vars_from_totales:dict,vars_from_no_mineras: dict,vars_from_mes
 
     return doc
 
-########################################################################################################################################
 
 #Generación del word: 
 
-def format_to_millions(value: float) -> str:
+def format_to_millions(value) -> str:
     """
-    Esta función formatea un valor numérico en millones con un decimal. Y los devuelve como un string.
+    Esta función formatea un valor numérico en millones con un decimal y lo devuelve como un string.
     Parámetros:
-    - value: Valor numérico a formatear.
+    - value: Valor numérico o representación en cadena de texto a formatear.
     Retorna:
-    - value_in_millions: Valor numérico formateado en millones con un decimal.
+    - Valor numérico formateado en millones con un decimal como cadena de texto.
     """
-    value_in_millions = value / 106
-    return '{:,.1f}'.format(value_in_millions)
+    # Initialize value_in_millions
+    value_in_millions = None
     
-
+    # Check if value is a float or a string that can be converted to float
+    if isinstance(value, float):
+        value_in_millions = value / 1e6
+    elif isinstance(value, str):
+        try:
+            value_in_millions = float(value) / 1e6
+        except ValueError:
+            raise ValueError(f"Cannot convert string to float: {value}")
+    
+    # Check if value_in_millions was set
+    if value_in_millions is not None:
+        return '{:,.1f}'.format(value_in_millions)
+    else:
+        raise TypeError(f"The value must be a float or a string representing a float, got {type(value)}")

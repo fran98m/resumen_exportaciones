@@ -406,3 +406,97 @@ KeyError: 'ano_actual'
 2023-11-01 16:35:45,514 - INFO - Se procesó el resumen de Venezuela exitosamente
 2023-11-01 16:35:45,570 - INFO - Datos procesados con éxito.
 2023-11-01 16:35:46,847 - INFO - Documento generado con éxito y guardado en /Users/franciscomontalvo/Library/CloudStorage/OneDrive-PROCOLOMBIA/Escritorio/Francisco/Corrección Resumen Export (Doc) (S)/Resumen Exportaciones Enero - Agosto.docx.
+2023-11-01 16:52:32,576 - INFO - Archivo importado con éxito.
+2023-11-01 16:52:32,577 - INFO - Exito en Mes y Año! El mes es: Agosto y el año es: 2023
+2023-11-01 16:52:32,577 - INFO - Año y mes extraídos con éxito.
+2023-11-01 16:52:51,254 - INFO - El conteo de empresas es: 6395
+2023-11-01 16:52:52,942 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['COMERCIALIZADORA INTERNACIONAL SUNSHINE BOUQUET COLOMBIA S.A',
+       'C I ENERGIA SOLAR  SAS  E. S.  WINDOWS',
+       'THE ELITE FLOWER  SAS   C I'],
+      dtype='object', name='Razon Social')
+2023-11-01 16:52:54,345 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['RENAULT SOCIEDAD DE FABRICACION DE AUTOMOTORES S.A.S.',
+       'HINO MOTORS MANUFACTURING COLOMBIA S.A.S',
+       'COLGATE PALMOLIVE COMPAÑIA'],
+      dtype='object', name='Razon Social')
+2023-11-01 16:52:55,425 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['RENAULT SOCIEDAD DE FABRICACION DE AUTOMOTORES S.A.S.',
+       'BUSSCAR DE COLOMBIA S.A.S. EN REORGANIZACION',
+       'FEDERACION NACIONAL DE CAFETEROS DE COLOMBIA'],
+      dtype='object', name='Razon Social')
+2023-11-01 16:52:56,630 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['MEXICHEM RESINAS COLOMBIA S.A. S.', 'ESENTTIA S.A.',
+       'C I ACEPALMA S A'],
+      dtype='object', name='Razon Social')
+2023-11-01 16:52:57,653 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['COLGATE PALMOLIVE COMPAÑIA', 'BEL-STAR  S.A.', 'ESENTTIA S.A.'], dtype='object', name='Razon Social')
+2023-11-01 16:52:58,939 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['SUPER DE ALIMENTOS S.A.S.',
+       'AGROQUIMICOS SEMILLAS Y EQUIPOS DE RIEGO S.A.', 'ESENTTIA S.A.'],
+      dtype='object', name='Razon Social')
+2023-11-01 16:52:59,722 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['BEL-STAR  S.A.', 'C. I. DE AZUCARES Y MIELES S.A',
+       'RED CARNICA  S.A.S.'],
+      dtype='object', name='Razon Social')
+2023-11-01 16:53:00,372 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['C I ACEPALMA S A', 'AVOFRUIT S.A.S.', 'C.I. TOP S.A.'], dtype='object', name='Razon Social')
+2023-11-01 16:53:01,021 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['FEDERACION NACIONAL DE CAFETEROS DE COLOMBIA', 'SUCAFINA COLOMBIA SAS',
+       'COMERCIALIZADORA INTERNACIONAL BANANEROS UNIDOS DE SANTA MAR'],
+      dtype='object', name='Razon Social')
+2023-11-01 16:53:01,806 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['FEDERACION NACIONAL DE CAFETEROS DE COLOMBIA',
+       'OLAM AGRO COLOMBIA S.A.S', 'CARCAFE LTDA'],
+      dtype='object', name='Razon Social')
+2023-11-01 16:53:02,275 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosdict_keys(['Estados Unidos', 'Ecuador', 'México', 'Brasil', 'Perú', 'Venezuela', 'Chile', 'Países Bajos', 'Bélgica', 'Canadá'])
+2023-11-01 16:53:04,384 - INFO - Se procesó el resumen de empresas exitosamente se tienen los siguientes datosdict_keys(['FEDERACION NACIONAL DE CAFETEROS DE COLOMBIA', 'COMERCIALIZADORA INTERNACIONAL SUNSHINE BOUQUET COLOMBIA S.A', 'C I ENERGIA SOLAR  SAS  E. S.  WINDOWS', 'ESENTTIA S.A.', 'THE ELITE FLOWER  SAS   C I', 'OLAM AGRO COLOMBIA S.A.S', 'SUCAFINA COLOMBIA SAS', 'C I ACEPALMA S A', 'MEXICHEM RESINAS COLOMBIA S.A. S.', 'RENAULT SOCIEDAD DE FABRICACION DE AUTOMOTORES S.A.S.'])
+2023-11-01 16:53:04,715 - INFO - Se procesó el resumen exitosamente
+2023-11-01 16:53:06,363 - INFO - Se tienen datos de los siguientes subsectores:dict_keys(['Café verde', 'Flores frescas', 'Acabados para la construcción', 'Plástico en formas primarias', 'Banano', 'Aceite de palma', 'Derivados de café', 'Frutas frescas', 'Desperdicios y desechos de minerales metálicos', 'Azúcar de caña'])
+2023-11-01 16:53:06,487 - INFO - Se procesó el resumen de departamentos exitosamente se tienen los siguientes datosIndex(['2022 USD (Ene-Ago)', '2023 USD (Ene-Ago)', 'Variacion_dep',
+       'Tendencia', 'Variance Percentage'],
+      dtype='object')
+2023-11-01 16:53:06,675 - INFO - Se procesó el resumen de Venezuela exitosamente
+2023-11-01 16:53:06,712 - INFO - Datos procesados con éxito.
+2023-11-01 16:53:38,091 - ERROR - Ocurrió un error: local variable 'value_in_millions' referenced before assignment
+Traceback (most recent call last):
+  File "/Users/franciscomontalvo/Documents/ProColombia/resumen_exportaciones/main.py", line 109, in seleccionar_archivo
+    resumen = generar_docx(variables_desde_totales, variables_desde_no_mineras, variables_desde_mes_ano)
+  File "/Users/franciscomontalvo/Documents/ProColombia/resumen_exportaciones/procesamiento_en_word.py", line 102, in generar_docx
+    p.add_run(f"Las cifras Enero - {mes} de {ano}, las exportaciones totales de Colombia fueron USD$ {format_to_millions(expt_act_tot)} millones, con un {tagvar_tot} del {var_exp_tot:.1f}% frente al mismo periodo de {vars_from_mes_ano['ano_ant']} USD$ {format_to_millions(expt_ant_tot)} millones.")
+  File "/Users/franciscomontalvo/Documents/ProColombia/resumen_exportaciones/procesamiento_en_word.py", line 258, in format_to_millions
+    return '{:,.1f}'.format(value_in_millions)
+UnboundLocalError: local variable 'value_in_millions' referenced before assignment
+2023-11-01 16:58:57,216 - INFO - Archivo importado con éxito.
+2023-11-01 16:58:57,217 - INFO - Exito en Mes y Año! El mes es: Agosto y el año es: 2023
+2023-11-01 16:58:57,217 - INFO - Año y mes extraídos con éxito.
+2023-11-01 16:59:16,132 - INFO - El conteo de empresas es: 6395
+2023-11-01 16:59:17,960 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['COMERCIALIZADORA INTERNACIONAL SUNSHINE BOUQUET COLOMBIA S.A',
+       'C I ENERGIA SOLAR  SAS  E. S.  WINDOWS',
+       'THE ELITE FLOWER  SAS   C I'],
+      dtype='object', name='Razon Social')
+2023-11-01 16:59:18,679 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['RENAULT SOCIEDAD DE FABRICACION DE AUTOMOTORES S.A.S.',
+       'HINO MOTORS MANUFACTURING COLOMBIA S.A.S',
+       'COLGATE PALMOLIVE COMPAÑIA'],
+      dtype='object', name='Razon Social')
+2023-11-01 16:59:19,364 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['RENAULT SOCIEDAD DE FABRICACION DE AUTOMOTORES S.A.S.',
+       'BUSSCAR DE COLOMBIA S.A.S. EN REORGANIZACION',
+       'FEDERACION NACIONAL DE CAFETEROS DE COLOMBIA'],
+      dtype='object', name='Razon Social')
+2023-11-01 16:59:19,942 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['MEXICHEM RESINAS COLOMBIA S.A. S.', 'ESENTTIA S.A.',
+       'C I ACEPALMA S A'],
+      dtype='object', name='Razon Social')
+2023-11-01 16:59:20,524 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['COLGATE PALMOLIVE COMPAÑIA', 'BEL-STAR  S.A.', 'ESENTTIA S.A.'], dtype='object', name='Razon Social')
+2023-11-01 16:59:21,081 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['SUPER DE ALIMENTOS S.A.S.',
+       'AGROQUIMICOS SEMILLAS Y EQUIPOS DE RIEGO S.A.', 'ESENTTIA S.A.'],
+      dtype='object', name='Razon Social')
+2023-11-01 16:59:21,785 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['BEL-STAR  S.A.', 'C. I. DE AZUCARES Y MIELES S.A',
+       'RED CARNICA  S.A.S.'],
+      dtype='object', name='Razon Social')
+2023-11-01 16:59:22,671 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['C I ACEPALMA S A', 'AVOFRUIT S.A.S.', 'C.I. TOP S.A.'], dtype='object', name='Razon Social')
+2023-11-01 16:59:23,179 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['FEDERACION NACIONAL DE CAFETEROS DE COLOMBIA', 'SUCAFINA COLOMBIA SAS',
+       'COMERCIALIZADORA INTERNACIONAL BANANEROS UNIDOS DE SANTA MAR'],
+      dtype='object', name='Razon Social')
+2023-11-01 16:59:23,925 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['FEDERACION NACIONAL DE CAFETEROS DE COLOMBIA',
+       'OLAM AGRO COLOMBIA S.A.S', 'CARCAFE LTDA'],
+      dtype='object', name='Razon Social')
+2023-11-01 16:59:24,480 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosdict_keys(['Estados Unidos', 'Ecuador', 'México', 'Brasil', 'Perú', 'Venezuela', 'Chile', 'Países Bajos', 'Bélgica', 'Canadá'])
+2023-11-01 16:59:26,851 - INFO - Se procesó el resumen de empresas exitosamente se tienen los siguientes datosdict_keys(['FEDERACION NACIONAL DE CAFETEROS DE COLOMBIA', 'COMERCIALIZADORA INTERNACIONAL SUNSHINE BOUQUET COLOMBIA S.A', 'C I ENERGIA SOLAR  SAS  E. S.  WINDOWS', 'ESENTTIA S.A.', 'THE ELITE FLOWER  SAS   C I', 'OLAM AGRO COLOMBIA S.A.S', 'SUCAFINA COLOMBIA SAS', 'C I ACEPALMA S A', 'MEXICHEM RESINAS COLOMBIA S.A. S.', 'RENAULT SOCIEDAD DE FABRICACION DE AUTOMOTORES S.A.S.'])
+2023-11-01 16:59:27,091 - INFO - Se procesó el resumen exitosamente
+2023-11-01 16:59:28,707 - INFO - Se tienen datos de los siguientes subsectores:dict_keys(['Café verde', 'Flores frescas', 'Acabados para la construcción', 'Plástico en formas primarias', 'Banano', 'Aceite de palma', 'Derivados de café', 'Frutas frescas', 'Desperdicios y desechos de minerales metálicos', 'Azúcar de caña'])
+2023-11-01 16:59:28,866 - INFO - Se procesó el resumen de departamentos exitosamente se tienen los siguientes datosIndex(['2022 USD (Ene-Ago)', '2023 USD (Ene-Ago)', 'Variacion_dep',
+       'Tendencia', 'Variance Percentage'],
+      dtype='object')
+2023-11-01 16:59:29,063 - INFO - Se procesó el resumen de Venezuela exitosamente
+2023-11-01 16:59:29,098 - INFO - Datos procesados con éxito.
+2023-11-01 16:59:29,193 - INFO - Documento generado con éxito y guardado en /Users/franciscomontalvo/Library/CloudStorage/OneDrive-PROCOLOMBIA/Escritorio/Francisco/Corrección Resumen Export (Doc) (S)/Resumen Exportaciones Enero - Agosto.docx.
