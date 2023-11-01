@@ -113,7 +113,7 @@ class App(QMainWindow):
 
             # Usamos QMessageBox para mostrar un mensaje de éxito
             QMessageBox.information(self, "**Éxito**", f"Se creó el documento. Puedes encontrarlo en: {ruta_de_salida}")
-        
+            QTimer.singleShot(1000, self.close)
         except Exception as e:
             # Usamos QMessageBox para mostrar un mensaje de error
             QMessageBox.critical(self, "Error", f"Ocurrió el siguiente error: {str(e)}")
