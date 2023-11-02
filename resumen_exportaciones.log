@@ -627,3 +627,94 @@ Traceback (most recent call last):
   File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/logging/__init__.py", line 1475, in error
     self._log(ERROR, msg, args, **kwargs)
 TypeError: _log() got an unexpected keyword argument 'exec_info'
+2023-11-01 18:57:56,868 - INFO - Se importaron los datos Excel (xlsb) correctamente desde el archivo: /Users/franciscomontalvo/Library/CloudStorage/OneDrive-PROCOLOMBIA/Escritorio/Francisco/Corrección Resumen Export (Doc) (S)/Base_Exportaciones_Colombianas_2017-2023 (Agosto).xlsb
+2023-11-01 18:57:56,869 - INFO - Datos importados otro formato correctamente desde el archivo: /Users/franciscomontalvo/Library/CloudStorage/OneDrive-PROCOLOMBIA/Escritorio/Francisco/Corrección Resumen Export (Doc) (S)/Base_Exportaciones_Colombianas_2017-2023 (Agosto).xlsb
+2023-11-01 18:57:56,869 - INFO - Archivo importado con éxito.
+2023-11-01 18:57:56,870 - ERROR - No se pudo extraer el mes y el año por el siguiente error: <class 'Exception'>
+NoneType: None
+2023-11-01 18:57:56,871 - INFO - Año y mes extraídos con éxito.
+2023-11-01 18:57:56,871 - ERROR - Ocurrió un procesando los datos de totales: '2023 USD (Ene-Ago)'
+Traceback (most recent call last):
+  File "/Users/franciscomontalvo/Library/Python/3.9/lib/python/site-packages/pandas/core/indexes/base.py", line 3790, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "index.pyx", line 152, in pandas._libs.index.IndexEngine.get_loc
+  File "index.pyx", line 181, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: '2023 USD (Ene-Ago)'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/franciscomontalvo/Documents/ProColombia/resumen_exportaciones/procesamiento_datos.py", line 75, in totales
+    expt_act_tot = totales_df[correlativas[9]].sum()
+  File "/Users/franciscomontalvo/Library/Python/3.9/lib/python/site-packages/pandas/core/frame.py", line 3893, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/Users/franciscomontalvo/Library/Python/3.9/lib/python/site-packages/pandas/core/indexes/base.py", line 3797, in get_loc
+    raise KeyError(key) from err
+KeyError: '2023 USD (Ene-Ago)'
+2023-11-01 18:57:56,905 - ERROR - Ocurrió un procesando los datos de no mineras: 'NoneType' object is not subscriptable
+Traceback (most recent call last):
+  File "/Users/franciscomontalvo/Documents/ProColombia/resumen_exportaciones/procesamiento_datos.py", line 127, in no_mineras
+    expt_act_tot_no_min = vars_from_totales["NME Export Act"]
+TypeError: 'NoneType' object is not subscriptable
+2023-11-01 18:57:56,905 - INFO - Datos procesados con éxito.
+2023-11-01 18:58:01,012 - ERROR - Ocurrió un error: 'NoneType' object is not subscriptable
+Traceback (most recent call last):
+  File "/Users/franciscomontalvo/Documents/ProColombia/resumen_exportaciones/main.py", line 109, in seleccionar_archivo
+    resumen = generar_docx(variables_desde_totales, variables_desde_no_mineras, variables_desde_mes_ano)
+  File "/Users/franciscomontalvo/Documents/ProColombia/resumen_exportaciones/procesamiento_en_word.py", line 31, in generar_docx
+    expt_act_tot = vars_from_totales["Total Export Act"]
+TypeError: 'NoneType' object is not subscriptable
+2023-11-01 20:01:29,699 - INFO - Se importaron los datos Excel (xlsb) correctamente desde el archivo: /Users/franciscomontalvo/Library/CloudStorage/OneDrive-PROCOLOMBIA/Escritorio/Francisco/Corrección Resumen Export (Doc) (S)/Base_Exportaciones_Colombianas_2017-2023 (Agosto).xlsb
+2023-11-01 20:01:29,706 - INFO - Datos importados otro formato correctamente desde el archivo: /Users/franciscomontalvo/Library/CloudStorage/OneDrive-PROCOLOMBIA/Escritorio/Francisco/Corrección Resumen Export (Doc) (S)/Base_Exportaciones_Colombianas_2017-2023 (Agosto).xlsb
+2023-11-01 20:01:29,706 - INFO - Archivo importado con éxito.
+2023-11-01 20:01:29,707 - INFO - Exito en Mes y Año! El mes es: Agosto y el año es: 2023
+2023-11-01 20:01:29,707 - INFO - Año y mes extraídos con éxito.
+2023-11-01 20:01:58,184 - INFO - El conteo de empresas es: 6395
+2023-11-01 20:02:00,977 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['COMERCIALIZADORA INTERNACIONAL SUNSHINE BOUQUET COLOMBIA S.A',
+       'C I ENERGIA SOLAR  SAS  E. S.  WINDOWS',
+       'THE ELITE FLOWER  SAS   C I'],
+      dtype='object', name='Razon Social')
+2023-11-01 20:02:02,280 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['RENAULT SOCIEDAD DE FABRICACION DE AUTOMOTORES S.A.S.',
+       'HINO MOTORS MANUFACTURING COLOMBIA S.A.S',
+       'COLGATE PALMOLIVE COMPAÑIA'],
+      dtype='object', name='Razon Social')
+2023-11-01 20:02:03,797 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['RENAULT SOCIEDAD DE FABRICACION DE AUTOMOTORES S.A.S.',
+       'BUSSCAR DE COLOMBIA S.A.S. EN REORGANIZACION',
+       'FEDERACION NACIONAL DE CAFETEROS DE COLOMBIA'],
+      dtype='object', name='Razon Social')
+2023-11-01 20:02:04,769 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['MEXICHEM RESINAS COLOMBIA S.A. S.', 'ESENTTIA S.A.',
+       'C I ACEPALMA S A'],
+      dtype='object', name='Razon Social')
+2023-11-01 20:02:05,427 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['COLGATE PALMOLIVE COMPAÑIA', 'BEL-STAR  S.A.', 'ESENTTIA S.A.'], dtype='object', name='Razon Social')
+2023-11-01 20:02:06,369 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['SUPER DE ALIMENTOS S.A.S.',
+       'AGROQUIMICOS SEMILLAS Y EQUIPOS DE RIEGO S.A.', 'ESENTTIA S.A.'],
+      dtype='object', name='Razon Social')
+2023-11-01 20:02:07,271 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['BEL-STAR  S.A.', 'C. I. DE AZUCARES Y MIELES S.A',
+       'RED CARNICA  S.A.S.'],
+      dtype='object', name='Razon Social')
+2023-11-01 20:02:08,426 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['C I ACEPALMA S A', 'AVOFRUIT S.A.S.', 'C.I. TOP S.A.'], dtype='object', name='Razon Social')
+2023-11-01 20:02:09,241 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['FEDERACION NACIONAL DE CAFETEROS DE COLOMBIA', 'SUCAFINA COLOMBIA SAS',
+       'COMERCIALIZADORA INTERNACIONAL BANANEROS UNIDOS DE SANTA MAR'],
+      dtype='object', name='Razon Social')
+2023-11-01 20:02:10,012 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosIndex(['FEDERACION NACIONAL DE CAFETEROS DE COLOMBIA',
+       'OLAM AGRO COLOMBIA S.A.S', 'CARCAFE LTDA'],
+      dtype='object', name='Razon Social')
+2023-11-01 20:02:10,533 - INFO - Se procesó el resumen de países exitosamente se tienen los siguientes datosdict_keys(['Estados Unidos', 'Ecuador', 'México', 'Brasil', 'Perú', 'Venezuela', 'Chile', 'Países Bajos', 'Bélgica', 'Canadá'])
+2023-11-01 20:02:12,758 - INFO - Se procesó el resumen de empresas exitosamente se tienen los siguientes datosdict_keys(['FEDERACION NACIONAL DE CAFETEROS DE COLOMBIA', 'COMERCIALIZADORA INTERNACIONAL SUNSHINE BOUQUET COLOMBIA S.A', 'C I ENERGIA SOLAR  SAS  E. S.  WINDOWS', 'ESENTTIA S.A.', 'THE ELITE FLOWER  SAS   C I', 'OLAM AGRO COLOMBIA S.A.S', 'SUCAFINA COLOMBIA SAS', 'C I ACEPALMA S A', 'MEXICHEM RESINAS COLOMBIA S.A. S.', 'RENAULT SOCIEDAD DE FABRICACION DE AUTOMOTORES S.A.S.'])
+2023-11-01 20:02:13,015 - INFO - Se procesó el resumen exitosamente
+2023-11-01 20:02:14,756 - INFO - Se tienen datos de los siguientes subsectores:dict_keys(['Café verde', 'Flores frescas', 'Acabados para la construcción', 'Plástico en formas primarias', 'Banano', 'Aceite de palma', 'Derivados de café', 'Frutas frescas', 'Desperdicios y desechos de minerales metálicos', 'Azúcar de caña'])
+2023-11-01 20:02:14,897 - INFO - Se procesó el resumen de departamentos exitosamente se tienen los siguientes datosIndex(['2022 USD (Ene-Ago)', '2023 USD (Ene-Ago)', 'Variacion_dep',
+       'Tendencia', 'Variance Percentage'],
+      dtype='object')
+2023-11-01 20:02:15,122 - INFO - Se procesó el resumen de Venezuela exitosamente
+2023-11-01 20:02:15,163 - INFO - Datos procesados con éxito.
+2023-11-01 20:02:15,189 - INFO - Documento de Word inicializado.
+2023-11-01 20:02:15,224 - INFO - Resumen inicial procesado exitosamente .
+2023-11-01 20:02:15,238 - INFO - Se generó el resumen de los destinos
+2023-11-01 20:02:15,248 - INFO - Se generó el resumen de las empresas
+2023-11-01 20:02:15,258 - INFO - Se generó el resumen de los productos
+2023-11-01 20:02:15,269 - INFO - Se generó el resumen de los departamentos
+2023-11-01 20:02:15,276 - INFO - Se generó el resumen de Venezuela
+2023-11-01 20:02:15,306 - INFO - Documento generado con éxito y guardado en /Users/franciscomontalvo/Library/CloudStorage/OneDrive-PROCOLOMBIA/Escritorio/Francisco/Corrección Resumen Export (Doc) (S)/Resumen Exportaciones Enero - Agosto.docx.
